@@ -8,5 +8,5 @@ export interface SwipeEvent extends MovementEvent {
   /**
    * type of the event
    */
-  type: 'start' | 'move' | 'end';
+  type: 'start' | 'move' | 'end' | 'cancel';
 }

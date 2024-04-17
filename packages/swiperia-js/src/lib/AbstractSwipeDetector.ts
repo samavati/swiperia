@@ -22,9 +22,13 @@ export abstract class AbstractSwipeDetector {
         ...config,
       };
     }
+    this._start = this._start.bind(this);
+    this._move = this._move.bind(this);
+    this._end = this._end.bind(this);
   }
 
   abstract point(e: UIEvent): Point;
+  
   protected _start(e: UIEvent) {
     const _source = this.point(e);
     this._source = _source;
@@ -65,12 +69,19 @@ export abstract class AbstractSwipeDetector {
     const threshold = this._config?.threshold || 10;
     const constraint =
       _duration <= allowedTime && _movement.distance >= threshold;
-    if (!constraint) return;
-    this._callback({
-      event: e,
-      type: 'end',
-      ..._movement,
-    });
+    if (constraint) {
+      this._callback({
+        event: e,
+        type: 'end',
+        ..._movement,
+      });
+    } else {
+      this._callback({
+        event: e,
+        type: 'cancel',
+        ..._movement,
+      });
+    }
   }
 
   abstract listen(callback: SwipeCallback): void;
