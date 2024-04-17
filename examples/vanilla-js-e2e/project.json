@@ -1,0 +1,9 @@
+{
+  "name": "vanilla-js-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "examples/vanilla-js-e2e/src",
+  "projectType": "application",
+  "implicitDependencies": ["vanilla-js"],
+  "// targets": "to see all targets run: nx show project vanilla-js-e2e --web",
+  "targets": {}
+}
