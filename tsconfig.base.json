@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "swiperia-angular": ["packages/swiperia-angular/src/index.ts"],
       "swiperia-core": ["packages/swiperia-core/src/index.ts"],
       "swiperia-js": ["packages/swiperia-js/src/index.ts"],
       "swiperia-react": ["packages/swiperia-react/src/index.ts"],
