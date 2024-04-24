@@ -4,7 +4,7 @@ import styles from './app.module.scss';
 import { useSwiperia } from 'swiperia-react';
 
 export function App() {
-  const helpers = useSwiperia({
+  const { ref } = useSwiperia({
     onSwipeStart: (e) => {
       console.log(e);
     },
@@ -13,12 +13,13 @@ export function App() {
     // },
     onSwipedDown: (e) => {
       console.log(e);
-    }
+    },
   });
   return (
-    <div {...helpers} style={{height: '200px', width: '200px', backgroundColor: 'blue'}}>
-
-    </div>
+    <div
+      ref={ref}
+      style={{ height: '200px', width: '200px', backgroundColor: 'blue' }}
+    ></div>
   );
 }
 
