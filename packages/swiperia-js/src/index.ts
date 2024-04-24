@@ -1,4 +1,4 @@
-export { AbstractSwipeDetector } from './lib/AbstractSwipeDetector';
-export { MouseSwipeDetector } from './lib/MouseSwipeDetector';
-export { TouchSwipeDetector } from './lib/TouchSwipeDetector';
-export { SwipeDetector } from './lib/SwipeDetector';
+export { AbstractSwiper } from './lib/AbstractSwiper/AbstractSwiper';
+export { MouseSwiper } from './lib/MouseSwiper/MouseSwiper';
+export { TouchSwiper } from './lib/TouchSwiper/TouchSwiper';
+export { Swiper } from './lib/Swiper/Swiper';

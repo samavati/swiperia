@@ -1,12 +1,12 @@
-import type { Point, SwipeCallback, SwipeConfig } from 'swiperia-core';
-import { AbstractSwipeDetector } from './AbstractSwipeDetector';
+import type { Vector2, SwipeCallback, SwipeConfig } from 'swiperia-core';
+import { AbstractSwiper } from '../AbstractSwiper/AbstractSwiper';
 
-export class MouseSwipeDetector extends AbstractSwipeDetector {
+export class MouseSwiper extends AbstractSwiper {
   constructor(el: HTMLElement, config?: SwipeConfig) {
     super(el, config);
   }
 
-  point(e: MouseEvent): Point {
+  point(e: MouseEvent): Vector2 {
     return [e.pageX, e.pageY];
   }
 
@@ -17,9 +17,9 @@ export class MouseSwipeDetector extends AbstractSwipeDetector {
   }
 
   protected override _end(e: UIEvent): void {
-      super._end(e);
-      window.removeEventListener('mousemove', this._move, false);
-      window.removeEventListener('mouseup', this._end, false);
+    super._end(e);
+    window.removeEventListener('mousemove', this._move, false);
+    window.removeEventListener('mouseup', this._end, false);
   }
 
   listen(callback: SwipeCallback): void {

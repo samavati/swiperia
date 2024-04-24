@@ -1,5 +1,5 @@
-import type { Point } from '../point/Point.type';
-import type { Direction } from './Direction.type';
+import type { Vector2 } from '../types/Vector2.type';
+import type { SwipeDirection } from '../types/SwipeDirection.type';
 
 /**
  * Determines the direction between two points.
@@ -8,7 +8,7 @@ import type { Direction } from './Direction.type';
  * @param b - The ending point.
  * @returns The direction between the two points, or `null` if the points are the same.
  */
-export const direction = (a: Point, b: Point): Direction | null => {
+export const direction = (a: Vector2, b: Vector2): SwipeDirection | null => {
   const [ax, ay] = a;
   const [bx, by] = b;
   const dx = bx - ax;

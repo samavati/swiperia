@@ -1,14 +1,14 @@
 import type { SwipeCallback, SwipeConfig } from 'swiperia-core';
-import { AbstractSwipeDetector } from './AbstractSwipeDetector';
+import { AbstractSwiper } from '../AbstractSwiper/AbstractSwiper';
 
-export class SwipeDetector {
-  private _detectors: AbstractSwipeDetector[] = [];
+export class Swiper {
+  private _detectors: AbstractSwiper[] = [];
   constructor(
     public el: HTMLElement,
     public detectors: (new (
       el: HTMLElement,
       config?: SwipeConfig
-    ) => AbstractSwipeDetector)[],
+    ) => AbstractSwiper)[],
     public config?: SwipeConfig
   ) {}
 

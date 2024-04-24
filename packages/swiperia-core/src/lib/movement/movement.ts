@@ -1,13 +1,21 @@
-import type { MovementEvent } from './MovementEvent.type';
-import type { Point } from '../point/Point.type';
+import type { MovementEvent } from '../types/MovementEvent.type';
+import type { Vector2 } from '../types/Vector2.type';
 
 import { direction } from '../direction/direction';
-import { distance } from '../point/distance';
+import { distance } from '../distance/distance';
 import { velocity, vxvy } from '../velocity/velocity';
 
+/**
+ * Calculates a movement event based on the given source and target points, and the duration of the movement.
+ *
+ * @param source - The starting point of the movement.
+ * @param target - The ending point of the movement.
+ * @param duration - The duration of the movement in milliseconds.
+ * @returns A movement event object containing details about the movement.
+ */
 export const movement = (
-  source: Point,
-  target: Point,
+  source: Vector2,
+  target: Vector2,
   duration: number
 ): MovementEvent => {
   const deltaX = target[0] - source[0];

@@ -1,6 +1,6 @@
-import type { Point } from '../point/Point.type';
-import type { Velocity } from './Velocity.type';
-import { distance } from '../point/distance';
+import type { Vector2 } from '../types/Vector2.type';
+
+import { distance } from '../distance/distance';
 
 /**
  * Calculates the velocity vector (vx, vy) between two points over a given time delta.
@@ -10,8 +10,9 @@ import { distance } from '../point/distance';
  * @param dt - The time delta in seconds.
  * @returns The velocity vector (vx, vy) in units per second.
  */
-export const vxvy = (a: Point, b: Point, dt: number): Velocity => {
-  if (dt <= 0) throw new Error('Time delta must be non-zero and positive.');
+export const vxvy = (a: Vector2, b: Vector2, dt: number): Vector2 => {
+  if (dt < 0) throw new Error('Time delta must be positive.');
+  if (dt === 0) return [Infinity, Infinity];
   const [ax, ay] = a;
   const [bx, by] = b;
   const dx = bx - ax;
@@ -27,8 +28,9 @@ export const vxvy = (a: Point, b: Point, dt: number): Velocity => {
  * @param dt - The time delta in seconds.
  * @returns The velocity in units per second.
  */
-export const velocity = (a: Point, b: Point, dt: number): number => {
-  if (dt <= 0) throw new Error('Time delta must be non-zero and positive.');
+export const velocity = (a: Vector2, b: Vector2, dt: number): number => {
+  if (dt < 0) throw new Error('Time delta must be positive.');
+  if (dt === 0) return Infinity;
   const _distance = distance(a, b);
   return _distance / dt;
 };

@@ -1,12 +1,12 @@
-import type { Point, SwipeCallback, SwipeConfig } from 'swiperia-core';
-import { AbstractSwipeDetector } from './AbstractSwipeDetector';
+import type { Vector2, SwipeCallback, SwipeConfig } from 'swiperia-core';
+import { AbstractSwiper } from '../AbstractSwiper/AbstractSwiper';
 
-export class TouchSwipeDetector extends AbstractSwipeDetector {
+export class TouchSwiper extends AbstractSwiper {
   constructor(el: HTMLElement, config?: SwipeConfig) {
     super(el, config);
   }
 
-  point(e: TouchEvent): Point {
+  point(e: TouchEvent): Vector2 {
     const touch = e.changedTouches[0];
     return [touch.pageX, touch.pageY];
   }

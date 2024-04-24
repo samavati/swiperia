@@ -5,6 +5,9 @@ import { useSwiperia } from 'swiperia-react';
 
 export function App() {
   const helpers = useSwiperia({
+    onSwipeStart: (e) => {
+      console.log(e);
+    },
     // onSwiped: (e) => {
     //   console.log(e);
     // },

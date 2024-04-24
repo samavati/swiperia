@@ -1,12 +1,26 @@
 import {
   type SwipeConfig,
-  type Point,
+  type Vector2,
   type SwipeCallback,
   movement,
 } from 'swiperia-core';
 
-export abstract class AbstractSwipeDetector {
-  protected _source: Point = [0, 0];
+/**
+ * Abstract base class for a swipe detector that handles touch/pointer/pen events and
+ * emits swipe events.
+ *
+ * Subclasses must implement the `point()` and `listen()` methods to handle the
+ * specific event types and coordinate systems.
+ *
+ * The `_start()`, `_move()`, and `_end()` methods are called by the event
+ * handlers to process the swipe events and emit the appropriate callbacks.
+ *
+ * The `_config` object can be used to customize the swipe detection behavior,
+ * such as the minimum distance threshold and whether to prevent scrolling during
+ * a swipe.
+ */
+export abstract class AbstractSwiper {
+  protected _source: Vector2 = [0, 0];
   protected _startTime: number = 0;
   protected _callback: SwipeCallback = () => {};
   protected _config: SwipeConfig = {
@@ -27,8 +41,8 @@ export abstract class AbstractSwipeDetector {
     this._end = this._end.bind(this);
   }
 
-  abstract point(e: UIEvent): Point;
-  
+  abstract point(e: UIEvent): Vector2;
+
   protected _start(e: UIEvent) {
     const _source = this.point(e);
     this._source = _source;

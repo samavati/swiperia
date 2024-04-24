@@ -1,16 +1,9 @@
-import {
-  MouseSwipeDetector,
-  SwipeDetector,
-  TouchSwipeDetector,
-} from 'swiperia-js';
+import { Swiper, MouseSwiper, TouchSwiper } from 'swiperia-js';
 
 const target = document.getElementById('draggable')!;
 const direction = document.getElementById('direction')!;
 
-const swiperia = new SwipeDetector(target, [
-  MouseSwipeDetector,
-  TouchSwipeDetector,
-]);
+const swiperia = new Swiper(target, [MouseSwiper, TouchSwiper]);
 
 swiperia.listen((e) => {
   switch (e.type) {
