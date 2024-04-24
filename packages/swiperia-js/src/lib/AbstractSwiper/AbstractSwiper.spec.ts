@@ -122,4 +122,12 @@ describe('AbstractSwipeDetector', () => {
       ...expectedMovement,
     });
   });
+
+  it('should call destroy when destroy is called', () => {
+    events.start();
+    const spy = vi.spyOn(window,'removeEventListener');
+    detector.destroy();
+
+    expect(spy).toHaveBeenCalledWith('mousemove', expect.anything(), false);
+  });
 });

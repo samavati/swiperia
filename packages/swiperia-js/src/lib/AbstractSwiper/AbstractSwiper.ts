@@ -23,7 +23,7 @@ export abstract class AbstractSwiper {
   protected _source: Vector2 = [0, 0];
   protected _startTime: number = 0;
   protected _callback: SwipeCallback = () => {};
-  protected _config: SwipeConfig = {
+  protected _config: Required<SwipeConfig> = {
     threshold: 10,
     preventScrollOnSwipe: false,
     allowedTime: 300,
@@ -66,7 +66,7 @@ export abstract class AbstractSwiper {
   protected _move(e: UIEvent) {
     const a = this._source;
     const b = this.point(e);
-    const _duration = (e.timeStamp || 0) - this._startTime;
+    const _duration = e.timeStamp - this._startTime;
     this._callback({
       event: e,
       type: 'move',
@@ -77,10 +77,10 @@ export abstract class AbstractSwiper {
   protected _end(e: UIEvent) {
     const a = this._source;
     const b = this.point(e);
-    const _duration = (e.timeStamp || 0) - this._startTime;
+    const _duration = e.timeStamp - this._startTime;
     const _movement = movement(a, b, _duration);
-    const allowedTime = this._config?.allowedTime || 300;
-    const threshold = this._config?.threshold || 10;
+    const allowedTime = this._config.allowedTime;
+    const threshold = this._config.threshold;
     const constraint =
       _duration <= allowedTime && _movement.distance >= threshold;
     if (constraint) {
