@@ -3,7 +3,87 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "examples/react-e2e/src",
-  "implicitDependencies": ["react"],
+  "implicitDependencies": [
+    "react"
+  ],
   "// targets": "to see all targets run: nx show project react-e2e --web",
-  "targets": {}
+  "targets": {
+    "lint": {
+      "cache": true,
+      "options": {
+        "cwd": "examples/react-e2e",
+        "command": "eslint ."
+      },
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.base.json",
+        "{projectRoot}/.eslintrc.json",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": [
+            "eslint"
+          ]
+        }
+      ],
+      "executor": "nx:run-commands",
+      "configurations": {}
+    },
+    "e2e": {
+      "options": {
+        "cwd": "examples/react-e2e",
+        "command": "playwright test"
+      },
+      "cache": true,
+      "inputs": [
+        "default",
+        "^default"
+      ],
+      "outputs": [
+        "{workspaceRoot}/dist/.playwright/examples/react-e2e/playwright-report",
+        "{workspaceRoot}/dist/.playwright/examples/react-e2e/test-output"
+      ],
+      "executor": "nx:run-commands",
+      "configurations": {}
+    },
+    "e2e-ci--src/example.spec.ts": {
+      "options": {
+        "cwd": "examples/react-e2e",
+        "command": "playwright test src/example.spec.ts"
+      },
+      "cache": true,
+      "inputs": [
+        "default",
+        "^default"
+      ],
+      "outputs": [
+        "{workspaceRoot}/dist/.playwright/examples/react-e2e/playwright-report",
+        "{workspaceRoot}/dist/.playwright/examples/react-e2e/test-output"
+      ],
+      "executor": "nx:run-commands",
+      "configurations": {}
+    },
+    "e2e-ci": {
+      "executor": "nx:noop",
+      "cache": true,
+      "inputs": [
+        "default",
+        "^default"
+      ],
+      "outputs": [
+        "{workspaceRoot}/dist/.playwright/examples/react-e2e/playwright-report",
+        "{workspaceRoot}/dist/.playwright/examples/react-e2e/test-output"
+      ],
+      "dependsOn": [
+        {
+          "target": "e2e-ci--src/example.spec.ts",
+          "projects": "self",
+          "params": "forward"
+        }
+      ],
+      "options": {},
+      "configurations": {}
+    }
+  },
+  "tags": []
 }

@@ -7,13 +7,93 @@
   "targets": {
     "build": {
       "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
+      "cache": true,
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "default",
+        "^default"
+      ],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/utils",
         "main": "utils/src/index.ts",
         "tsConfig": "utils/tsconfig.lib.json",
-        "assets": ["utils/*.md"]
-      }
+        "assets": [
+          "utils/*.md"
+        ]
+      },
+      "configurations": {}
+    },
+    "serve": {
+      "options": {
+        "cwd": "utils/test-utils",
+        "command": "vite serve"
+      },
+      "executor": "nx:run-commands",
+      "configurations": {}
+    },
+    "preview": {
+      "options": {
+        "cwd": "utils/test-utils",
+        "command": "vite preview"
+      },
+      "executor": "nx:run-commands",
+      "configurations": {}
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "build",
+        "spa": true
+      },
+      "configurations": {}
+    },
+    "test": {
+      "options": {
+        "cwd": "utils/test-utils",
+        "command": "vitest run"
+      },
+      "cache": true,
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": [
+            "vitest"
+          ]
+        }
+      ],
+      "outputs": [
+        "{workspaceRoot}/utils/coverage/utils"
+      ],
+      "executor": "nx:run-commands",
+      "configurations": {}
+    },
+    "lint": {
+      "cache": true,
+      "options": {
+        "cwd": "utils/test-utils",
+        "command": "eslint ."
+      },
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.base.json",
+        "{projectRoot}/.eslintrc.json",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": [
+            "eslint"
+          ]
+        }
+      ],
+      "executor": "nx:run-commands",
+      "configurations": {}
     }
-  }
+  },
+  "implicitDependencies": []
 }

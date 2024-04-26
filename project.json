@@ -8,7 +8,12 @@
         "port": 4873,
         "config": ".verdaccio/config.yml",
         "storage": "tmp/local-registry/storage"
-      }
+      },
+      "configurations": {}
     }
-  }
+  },
+  "projectType": "library",
+  "sourceRoot": ".",
+  "implicitDependencies": [],
+  "tags": []
 }

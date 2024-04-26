@@ -13,20 +13,105 @@
   },
   "tags": [],
   "targets": {
+    "nx-release-publish": {
+      "dependsOn": [
+        "^nx-release-publish"
+      ],
+      "executor": "@nx/js:release-publish",
+      "options": {
+        "packageRoot": "dist/packages/swiperia-core"
+      },
+      "configurations": {}
+    },
     "build": {
       "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
+      "cache": true,
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "default",
+        "^default"
+      ],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/packages/swiperia-core",
         "main": "packages/swiperia-core/src/index.ts",
         "tsConfig": "packages/swiperia-core/tsconfig.lib.json",
-        "assets": ["packages/swiperia-core/*.md"]
-      }
+        "assets": [
+          "packages/swiperia-core/*.md"
+        ]
+      },
+      "configurations": {}
     },
-    "nx-release-publish": {
+    "serve": {
       "options": {
-        "packageRoot": "dist/{projectRoot}"
-      }
+        "cwd": "packages/swiperia-core",
+        "command": "vite serve"
+      },
+      "executor": "nx:run-commands",
+      "configurations": {}
+    },
+    "preview": {
+      "options": {
+        "cwd": "packages/swiperia-core",
+        "command": "vite preview"
+      },
+      "executor": "nx:run-commands",
+      "configurations": {}
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "build",
+        "spa": true
+      },
+      "configurations": {}
+    },
+    "test": {
+      "options": {
+        "cwd": "packages/swiperia-core",
+        "command": "vitest run"
+      },
+      "cache": true,
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": [
+            "vitest"
+          ]
+        }
+      ],
+      "outputs": [
+        "{workspaceRoot}/coverage/packages/swiperia-core"
+      ],
+      "executor": "nx:run-commands",
+      "configurations": {}
+    },
+    "lint": {
+      "cache": true,
+      "options": {
+        "cwd": "packages/swiperia-core",
+        "command": "eslint ."
+      },
+      "inputs": [
+        "default",
+        "^default",
+        "{workspaceRoot}/.eslintrc.base.json",
+        "{projectRoot}/.eslintrc.json",
+        "{workspaceRoot}/tools/eslint-rules/**/*",
+        {
+          "externalDependencies": [
+            "eslint"
+          ]
+        }
+      ],
+      "executor": "nx:run-commands",
+      "configurations": {}
     }
-  }
+  },
+  "implicitDependencies": []
 }
