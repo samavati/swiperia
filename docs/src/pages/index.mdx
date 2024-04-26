@@ -1,0 +1,44 @@
+
+# Swiperia
+
+Swiperia is a powerful and flexible library for creating smooth and responsive swiping experiences in web applications. Whether you're building a carousel, a touch-enabled slider, or any other interactive UI component that requires swiping gestures, Swiperia has got you covered.
+
+## Features
+
+- **Cross-Platform Support**: Swiperia works seamlessly across different platforms and devices, including desktops, tablets, and mobile phones.
+- **Customizable Swiping Behavior**: Customize the swiping behavior to fit your specific needs, such as setting thresholds, defining swipe directions, and handling different swipe events.
+- **Extensible and Modular**: Swiperia is designed with extensibility in mind, allowing you to create and integrate custom swiping behaviors or plugins.
+- **Performant and Lightweight**: Swiperia is built with performance as a top priority, ensuring smooth and efficient swiping experiences even on resource-constrained devices.
+- **Accessible and Inclusive**: Swiperia follows best practices for accessibility, ensuring that your swiping components are usable by everyone, including users with disabilities.
+
+## Getting Started
+
+To get started with Swiperia, you can install it via npm or yarn:
+
+```bash
+npm install swiperia
+# or
+yarn add swiperia
+```
+
+
+Once installed, you can import and use the Swiperia components in your application:
+
+```bash
+import { Swiper, MouseSwiper, TouchSwiper } from 'swiperia';
+
+const mySwiper = new Swiper(targetElement, [MouseSwiper, TouchSwiper]);
+
+mySwiper.listen((event) => {
+  // Handle swipe events
+});
+```
+
+## Documentation
+For detailed documentation, including guides, API references, and examples, please visit the Swiperia Documentation.
+
+## Contributing
+We welcome contributions from the community! If you'd like to contribute to Swiperia, please read our Contributing Guide for more information.
+
+## License
+Swiperia is released under the MIT License.
