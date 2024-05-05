@@ -1,0 +1,52 @@
+#### Overview
+
+The `SwipeConfig` type is used within the Swiperia library to configure the behavior and criteria for recognizing swipe gestures. This configuration allows developers to tailor the swipe detection to specific needs, enhancing the flexibility and responsiveness of the swipe interaction.
+
+#### Type Definition
+
+```ts
+export type SwipeConfig = {
+  /**
+   * required min distance(px) traveled to be considered swipe
+   */
+  threshold?: number;
+  /**
+   * maximum time(ms) allowed to travel that distance
+   */
+  allowedTime?: number;
+};
+```
+
+#### Description
+
+`SwipeConfig` consists of two optional properties:
+
+* **threshold (`number`)**: This property defines the minimum distance in pixels that a touch movement must travel to be considered a swipe. Setting this threshold helps in distinguishing between a swipe and a tap or other touch gestures.
+* **allowedTime (`number`)**: This property specifies the maximum time in milliseconds that the touch movement can take to travel the `threshold` distance. This time constraint ensures that the gesture is performed with a swift motion, characteristic of swipes.
+
+#### Usage
+
+The `SwipeConfig` type is used to configure swipe detection parameters in components or functions that handle swipe gestures. By adjusting these parameters, developers can control the sensitivity and timing of swipe recognition, making the application more intuitive and responsive to user interactions.
+
+#### Examples
+
+**Basic Swipe Configuration**
+
+```ts
+// Configuration for a swipe gesture
+const swipeConfig: SwipeConfig = {
+  threshold: 50,  // Minimum distance of 50 pixels to be considered a swipe
+  allowedTime: 500  // Swipe must be completed within 500 milliseconds
+};
+```
+
+**Function Using SwipeConfig**
+
+```ts
+// Function that initializes swipe detection with given configuration
+function initializeSwipeDetection(config: SwipeConfig) {
+  // Implementation to set up swipe detection based on the provided config
+}
+
+initializeSwipeDetection({ threshold: 100, allowedTime: 300 });
+```

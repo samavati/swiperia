@@ -1,0 +1,67 @@
+#### Overview
+
+The `MovementEvent` type is a comprehensive data structure used in the Swiperia library to represent the details of a movement, typically a swipe gesture. This type encapsulates various metrics and properties that describe the dynamics and characteristics of the movement.
+
+#### Type Definition
+
+```ts
+export interface MovementEvent {
+  direction: SwipeDirection | null;
+  source: Vector2;
+  target: Vector2;
+  deltaX: number;
+  deltaY: number;
+  absX: number;
+  absY: number;
+  velocity: number;
+  vxvy: Vector2;
+  distance: number;
+}
+```
+
+#### Description
+
+`MovementEvent` includes the following properties:
+
+* **direction (`SwipeDirection | null`)**: Specifies the primary [direction](/references/swipe-direction) of the movement (right, left, up, down) or null if not applicable.
+* **source (`Vector2`)**: The starting point of the movement, represented as a [2D vector](/references/vector-2).
+* **target (`Vector2`)**: The ending point of the movement, also represented as a [2D vector](/references/vector-2).
+* **deltaX (`number`)**: The horizontal displacement of the movement. Positive values indicate a rightward movement, while negative values indicate a leftward movement.
+* **deltaY (`number`)**: The vertical displacement of the movement. Positive values indicate a downward movement, while negative values indicate an upward movement.
+* **absX (`number`)**: The absolute value of deltaX, representing the total horizontal distance traveled, regardless of direction.
+* **absY (`number`)**: The absolute value of deltaY, representing the total vertical distance traveled, regardless of direction.
+* **velocity (`number`)**: The overall speed of the movement, calculated as the Euclidean distance traveled divided by the time taken.
+* **vxvy (`Vector2`)**: The velocity components along the x and y axes, respectively. check [2D vector](/references/vector-2) for more clientInformation.
+* **distance (`number`)**: The straight-line (Euclidean) distance between the source and target points.
+
+#### Usage
+
+The `MovementEvent` type is used to provide detailed information about a movement event, such as a swipe. It is essential for applications that need to analyze or respond to such movements, providing all necessary metrics to implement responsive and intuitive interactions.
+
+#### Examples
+
+**Handling a Movement Event**
+
+```ts
+function processMovement(event: MovementEvent) {
+  console.log(`Moved from ${event.source} to ${event.target} with a velocity of ${event.velocity}`);
+  if (event.direction) {
+    console.log(`Direction of movement: ${event.direction}`);
+  }
+}
+
+const movementEvent: MovementEvent = {
+  direction: 'right',
+  source: [0, 0],
+  target: [100, 0],
+  deltaX: 100,
+  deltaY: 0,
+  absX: 100,
+  absY: 0,
+  velocity: 50,
+  vxvy: [50, 0],
+  distance: 100
+};
+
+processMovement(movementEvent);
+```

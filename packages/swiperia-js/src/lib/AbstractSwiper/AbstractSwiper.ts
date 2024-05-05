@@ -25,7 +25,6 @@ export abstract class AbstractSwiper {
   protected _callback: SwipeCallback = () => {};
   protected _config: Required<SwipeConfig> = {
     threshold: 10,
-    preventScrollOnSwipe: false,
     allowedTime: 300,
   };
 

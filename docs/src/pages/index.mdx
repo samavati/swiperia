@@ -1,0 +1,71 @@
+import { Tabs } from 'nextra/components';
+
+# Swiperia
+
+Swiperia is a powerful and flexible library for creating smooth and responsive swiping experiences in web applications. Whether you're building a carousel, a touch-enabled slider, or any other interactive UI component that requires swiping gestures, Swiperia has got you covered.
+
+## Features
+
+- **Cross-Platform Support**: Swiperia works seamlessly across different platforms and devices, including desktops, tablets, and mobile phones.
+- **Customizable Swiping Behavior**: Customize the swiping behavior to fit your specific needs, such as setting thresholds, defining swipe directions, and handling different swipe events.
+- **Extensible and Modular**: Swiperia is designed with extensibility in mind, allowing you to create and integrate custom swiping behaviors or plugins.
+- **Performant and Lightweight**: Swiperia is built with performance as a top priority, ensuring smooth and efficient swiping experiences even on resource-constrained devices.
+- **Accessible and Inclusive**: Swiperia follows best practices for accessibility, ensuring that your swiping components are usable by everyone, including users with disabilities.
+
+## Getting Started
+
+<Tabs items={['React', 'Web (JS)']}>
+  <Tabs.Tab>
+  First you need to install the package:
+  ```bash  copy
+  npm install swiperia-react
+  ```
+  then you can import the components you need:
+  ```jsx copy
+  import { useSwiperia } from 'swiperia-react';
+
+const App = () => {
+  const { ref } = useSwiperia({
+    onSwipedDown: (e) => {
+        // Swiping down has triggered
+    },
+  });
+  return (<div ref={ref}>you can listen to swipes here</div>);
+}
+  ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+  First you need to install the package:
+  ```bash  copy
+  npm install swiperia-js
+  ```
+  then you can import the components you need:
+  ```js copy
+import { Swiper, MouseSwiper, TouchSwiper } from 'swiperia-js';
+
+const target = document.getElementById('draggable');
+const direction = document.getElementById('direction');
+
+const swiperia = new Swiper(target, [MouseSwiper, TouchSwiper]);
+
+swiperia.listen((e) => {
+    switch (e.type) {
+        case 'end':
+            // Swiping has ended
+            break;
+        case 'cancel':
+            // Swiping has been canceled
+            break;
+        case 'start':
+            // Swiping has started
+            break;
+        case 'move':
+            // Swiping is in progress
+            break;
+        default:
+            break;
+    }
+});
+  ```
+  </Tabs.Tab>
+</Tabs>
