@@ -7,10 +7,6 @@ export type SwipeConfig = {
    */
   threshold?: number;
   /**
-   * prevents scroll during swipe
-   */
-  preventScrollOnSwipe?: boolean;
-  /**
    * maximum time(ms) allowed to travel that distance
    */
   allowedTime?: number;
