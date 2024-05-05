@@ -3,6 +3,7 @@
     "swiperia-core",
     "swiperia-js",
     "swiperia-react",
-    "docs"
+    "docs",
+    "swiperia"
   ]
 }

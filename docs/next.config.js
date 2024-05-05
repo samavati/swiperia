@@ -22,13 +22,11 @@ const nextConfig = {
     svgr: false,
   },
   output: 'export',
+  basePath: '/swiperia',
   images: {
     loader: 'akamai',
     path: '',
   },
-  // images: {
-  //   unoptimized: true,
-  // },
 };
 
 // @ts-ignore
