@@ -1,0 +1,60 @@
+The `TouchSwiper` class is a specialized implementation of the `AbstractSwiper` class designed to handle touch events for swipe gestures on touch-enabled devices. This class provides a robust solution for integrating swipe functionality into web applications, ensuring a smooth and responsive user experience on smartphones, tablets, and other touch-screen devices.
+
+#### Constructor
+
+```ts
+constructor(el: HTMLElement, config?: SwipeConfig)
+```
+
+**Parameters:**
+
+* `el: HTMLElement` - The HTML element that the swipe gestures are to be attached to.
+* `config?: SwipeConfig` - Optional [configuration](/web-js/configuration) settings that define the behavior of the swipe detection, such as threshold distances, allowed time for swipes, and whether to prevent default scrolling during a swipe.
+
+**Description:**\
+Initializes a new instance of the `TouchSwiper` class, setting up the necessary event listeners on the specified HTML element to detect and handle touch events.
+
+#### Methods
+
+##### point(e: TouchEvent): Vector2
+
+**Parameters:**
+
+* `e: TouchEvent` - The touch event triggered by user interaction.
+
+**Returns:**
+
+* `Vector2` - A tuple representing the x and y coordinates of the touch point.
+
+**Description:**\
+Extracts the touch point coordinates from a `TouchEvent`. It retrieves the position of the first touch point from the `changedTouches` list, which is useful for determining the initial contact point in a swipe gesture.
+
+##### listen(callback: SwipeCallback): void
+
+**Parameters:**
+
+* `callback: SwipeCallback` - A callback function that is invoked when a swipe event occurs.
+
+**Description:**\
+Registers the provided callback function as an event listener for swipe events. This method sets up the initial touchstart event listener that triggers the swipe detection process.
+
+##### destroy(): void
+
+**Description:**\
+Removes all event listeners set up by this instance, effectively cleaning up and preventing any further swipe detection from occurring. This method should be called to avoid memory leaks and ensure proper cleanup when the swipe functionality is no longer needed.
+
+#### Usage
+
+The `TouchSwiper` class is typically used in web applications where touch-based interaction is expected. It can be utilized to add swipe functionality to sliders, carousels, or any interactive components that benefit from touch gesture navigation.
+
+#### Example
+
+```ts
+const swiperElement = document.getElementById('swiper');
+const swiper = new TouchSwiper(swiperElement, { threshold: 15 });
+swiper.listen((swipeData) => {
+  console.log('Swiped:', swipeData.direction);
+});
+```
+
+This example creates a new `TouchSwiper` instance attached to an HTML element with the ID 'swiper'. It sets a swipe threshold of 15 pixels and logs the direction of the swipe when it occurs.

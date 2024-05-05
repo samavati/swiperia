@@ -1,0 +1,40 @@
+#### Overview
+
+The `SwipeCallback` type in the Swiperia library is a function type used to define callback functions that handle swipe events. This callback is invoked whenever a [swipe event](/references/swipe-event) occurs, providing developers with a mechanism to respond to swipe gestures in a dynamic and interactive manner.
+
+#### Type Definition
+
+```ts
+export type SwipeCallback = (event: SwipeEvent) => void;
+```
+
+#### Description
+
+`SwipeCallback` is a function type that takes a single parameter:
+
+* **event (`SwipeEvent`)**: An object that contains detailed information about the [swipe event](/references/swipe-event), including the direction, velocity, distance, and other relevant metrics derived from the `MovementEvent`, as well as swipe-specific data such as the original UI event and the swipe phase (start, move, end, cancel).
+
+The function is expected to return `void`, indicating it is used for side effects (such as updating UI or state) rather than computing a value.
+
+#### Usage
+
+`SwipeCallback` functions are typically used in components or services that need to react to user swipe interactions. By providing a [`SwipeEvent`](/references/swipe-event) to the callback, developers can implement specific behaviors based on the details of the swipe, such as changing the view, triggering animations, or updating data based on the swipe direction and distance.
+
+#### Examples
+
+**Implementing a Swipe Callback**
+
+```ts
+const handleSwipe: SwipeCallback = (event) => {
+  console.log(`Swipe detected: ${event.type} at position`, event.target);
+  if (event.type === 'end') {
+    console.log('Swipe completed with total distance:', event.distance);
+  }
+};
+
+// Example usage in a swipe-aware component
+function setupSwipeListener(element: HTMLElement) {
+  element.addEventListener('swipe', handleSwipe as any); // Type assertion for simplicity in this example
+}
+```
+

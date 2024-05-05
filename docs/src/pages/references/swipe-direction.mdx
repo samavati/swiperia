@@ -1,0 +1,63 @@
+#### Overview
+
+The `SwipeDirection` type is an essential component of the Swiperia library, used to specify the direction of a swipe gesture. This type helps in categorizing swipe movements and triggering corresponding actions based on the direction of the swipe.
+
+#### Type Definition
+
+```ts
+export type SwipeDirection = 'right' | 'left' | 'up' | 'down';
+```
+
+#### Description
+
+`SwipeDirection` is a TypeScript type that can take one of four string literals as its value:
+
+* **'right'**: Indicates a swipe gesture moving horizontally from left to right.
+* **'left'**: Indicates a swipe gesture moving horizontally from right to left.
+* **'up'**: Indicates a swipe gesture moving vertically from bottom to top.
+* **'down'**: Indicates a swipe gesture moving vertically from top to bottom.
+
+These values are used to describe the primary direction of a swipe, which can be crucial for applications that need to respond differently based on the swipe direction (e.g., navigating through a carousel, pulling down to refresh).
+
+#### Usage
+
+The `SwipeDirection` type is typically used in functions and components that handle swipe gestures, allowing them to execute conditional logic based on the direction of the swipe. It is also used in event objects that describe swipe events, providing developers with straightforward access to the direction data.
+
+#### Examples
+
+**Handling Swipe Directions in Event Listeners**
+
+```ts
+function handleSwipe(direction: SwipeDirection) {
+  switch (direction) {
+    case 'right':
+      console.log('Swiped right');
+      break;
+    case 'left':
+      console.log('Swiped left');
+      break;
+    case 'up':
+      console.log('Swiped up');
+      break;
+    case 'down':
+      console.log('Swiped down');
+      break;
+  }
+}
+```
+
+**Using SwipeDirection in a Swipe Event**
+
+```ts
+interface SwipeEvent {
+  direction: SwipeDirection;
+  // other properties...
+}
+
+const swipeEvent: SwipeEvent = {
+  direction: 'up',
+  // other values...
+};
+
+handleSwipe(swipeEvent.direction);
+```

@@ -1,0 +1,79 @@
+import { Tabs } from 'nextra/components';
+
+Welcome to the swiperia-js documentation. swiperia-js is a robust and flexible library designed to enhance the interactivity of web applications by enabling touch and mouse swipe functionalities. This library is part of the Swiperia suite, which provides tools for creating responsive and intuitive swiping experiences across multiple platforms and devices.
+
+## Overview
+
+swiperia-js offers a comprehensive set of features that allow developers to implement customized swipe interactions easily. Whether you're building sliders, carousels, or any interactive components that require swipe gestures, swiperia-js provides the necessary tools to accomplish this with minimal effort.
+
+### Key Features
+
+- **Multi-Input Support**: swiperia-js supports both mouse and touch inputs, making it versatile for desktop and mobile environments.
+- **Extensible Architecture**: The library is built with modularity in mind, allowing developers to extend or customize the default behavior by creating custom swipers.
+- **Performance Optimized**: Ensures smooth and responsive interactions, even on devices with limited resources.
+- **Easy to Integrate**: Designed to be straightforward to integrate with existing projects without needing extensive setup.
+- **Event Handling**: Provides a robust callback mechanism to handle various swipe events, enabling developers to hook into start, move, end, and cancel events to trigger appropriate responses in the UI.
+
+## Installation
+
+swiperia-js can be easily installed using npm or yarn. Here is how you can add it to your project:
+
+<Tabs items={['npm', 'yarn']}>
+  <Tabs.Tab>
+  ```bash copy
+  npm install swiperia-js
+  ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+  ```bash copy
+  yarn add swiperia-js
+  ```
+  </Tabs.Tab>
+</Tabs>
+
+## Usage
+
+To use swiperia-js in your project, you need to import the necessary classes from the package and instantiate them with appropriate configurations.
+
+<Tabs items={['TypeScript', 'JavaScript']}>
+  <Tabs.Tab>
+```ts copy
+import { Swiper, MouseSwiper, TouchSwiper } from 'swiperia-js';
+
+const targetElement = document.getElementById('your-target-element')!;
+
+// Initialize Swiper with desired detectors
+const swiper = new Swiper(targetElement, [MouseSwiper, TouchSwiper]);
+
+// Listen to swipe events
+swiper.listen((event) => {
+  console.log('Swipe event detected:', event);
+  // You can handle different types of events here
+});
+```
+  </Tabs.Tab>
+  <Tabs.Tab>
+```js copy
+import { Swiper, MouseSwiper, TouchSwiper } from 'swiperia-js';
+
+const targetElement = document.getElementById('your-target-element');
+
+// Initialize Swiper with desired detectors
+const swiper = new Swiper(targetElement, [MouseSwiper, TouchSwiper]);
+
+// Listen to swipe events
+swiper.listen((event) => {
+  console.log('Swipe event detected:', event);
+  // You can handle different types of events here
+});
+```
+  </Tabs.Tab>
+</Tabs>
+
+## API Reference
+
+### Classes
+
+- **[Swiper](/web-js/swiper)**: The main class that initializes the swipe functionality on a given HTML element.
+- **MouseSwiper**: Handles mouse-specific swipe interactions.
+- **[TouchSwiper](/web-js/touch-swiper)**: Handles touch-specific swipe interactions.

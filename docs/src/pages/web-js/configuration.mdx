@@ -1,0 +1,44 @@
+The [SwipeConfig](/references/swipe-config) type is a crucial part of the Swiperia library, providing a flexible configuration interface for customizing the behavior of swipe gestures in your application. This configuration allows developers to fine-tune how swipe interactions are recognized and handled, ensuring that the swiping experience can be tailored to meet specific requirements of different UI elements or interaction paradigms.
+
+#### Properties
+
+* **`threshold`** (optional): `number`
+
+  * **Description**: Specifies the minimum distance (in pixels) that a touch or pointer movement must travel to be considered a valid swipe. This property helps in distinguishing between a swipe and a tap or click, preventing false swipe detections when the user intends only to tap or click.
+  * **Default Value**: If not specified, a sensible default value (usually around 10 pixels) should be assumed, providing a balance between responsiveness and accidental swipe detection.
+* **`allowedTime`** (optional): `number`
+
+  * **Description**: Defines the maximum time (in milliseconds) allowed for the movement to cover the `threshold` distance. This parameter helps in differentiating between a swipe and a slow drag or scroll, ensuring that the gesture is both quick and deliberate.
+  * **Default Value**: Typically set to a default (e.g., 300 milliseconds) that considers the average speed of a quick swipe, ensuring that the interaction feels natural and responsive.
+
+#### Usage Example
+
+Below is an example of how `SwipeConfig` might be used to instantiate a swiper with custom settings:
+
+```ts
+import { Swiper, MouseSwiper, TouchSwiper } from 'swiperia';
+
+// Element where the swiper will be applied
+const targetElement = document.getElementById('my-swipe-area');
+
+// Configuration for the swiper
+const swipeConfig = {
+  threshold: 20,  // Minimum swipe distance of 20 pixels
+  allowedTime: 250  // Maximum time of 250 milliseconds to travel the threshold distance
+};
+
+// Creating a new Swiper instance with custom configuration
+const mySwiper = new Swiper(targetElement, [MouseSwiper, TouchSwiper], swipeConfig);
+
+// Listening to swipe events
+mySwiper.listen((event) => {
+  console.log('Swipe detected:', event);
+});
+```
+
+#### Best Practices
+
+* **Threshold Adjustment**: Consider the size of the target elements and the typical interaction mode (e.g., thumb or finger swipes on mobile, mouse drags on desktop) when setting the `threshold`. Larger elements and touch-based interactions might benefit from a slightly higher threshold to prevent accidental swipes.
+* **Timing Sensitivity**: The `allowedTime` should be set based on the expected quickness of a swipe. For more dynamic and responsive elements, a shorter time might be appropriate, whereas more static elements might use a longer time to reduce false positives.
+
+By configuring `SwipeConfig` appropriately, developers can enhance the user experience by making swipes more intuitive and tailored to the specific context of the application.
