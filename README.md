@@ -1,6 +1,5 @@
 <div align='center'>
-  <div align='center'>[![Swiperia — The modern swipe gesture detector](https://raw.githubusercontent.com/samavati/swiperia/main/docs/public/assets/logo/logox152.png)](https://samavati.github.io/swiperia/)</div>
-  <h1 style="color:#00B3B1">Swiperia</h1>
+<img height="152" width="152" src="https://raw.githubusercontent.com/samavati/swiperia/main/docs/public/assets/logotype/logotypex152.png" />
 </div>
 
 Welcome to Swiperia, a comprehensive suite of libraries designed to enhance web and mobile applications with advanced swipe gesture capabilities. This monorepo contains several packages including `swiperia-core`, `swiperia-js`, and `swiperia-react`, each tailored to different environments and requirements.
