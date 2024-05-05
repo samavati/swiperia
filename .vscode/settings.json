@@ -2,6 +2,7 @@
   "conventionalCommits.scopes": [
     "swiperia-core",
     "swiperia-js",
-    "swiperia-react"
+    "swiperia-react",
+    "docs"
   ]
 }

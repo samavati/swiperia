@@ -21,6 +21,14 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  output: 'export',
+  images: {
+    loader: 'akamai',
+    path: '',
+  },
+  // images: {
+  //   unoptimized: true,
+  // },
 };
 
 // @ts-ignore

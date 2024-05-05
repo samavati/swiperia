@@ -1,0 +1,59 @@
+#### Overview
+
+The `SwipeEvent` type extends the [`MovementEvent`](/references/movement-event) type in the Swiperia library, specifically tailored to represent swipe gestures. This type includes additional properties relevant to handling swipe-specific interactions, making it a crucial component for applications that need to respond dynamically to swipe gestures.
+
+#### Type Definition
+
+```ts
+export interface SwipeEvent extends MovementEvent {
+  event: UIEvent;
+  type: 'start' | 'move' | 'end' | 'cancel';
+}
+```
+
+#### Description
+
+`SwipeEvent` inherits all properties from [`MovementEvent`](/references/movement-event) and includes the following additional properties:
+
+* **event (`UIEvent`)**: The original [UI event](https://developer.mozilla.org/en-US/docs/Web/API/UIEvent) that triggered the swipe. This could be a touch or mouse event, providing context such as the target element and other native event properties.
+* **type (`'start' | 'move' | 'end' | 'cancel'`)**: Specifies the phase of the swipe gesture. Each type represents a different stage in the swipe lifecycle:
+
+  * **'start'**: The beginning of a swipe gesture.
+  * **'move'**: A movement update during a swipe gesture.
+  * **'end'**: The end of a swipe gesture, typically when the user lifts their finger or releases the mouse button.
+  * **'cancel'**: A swipe gesture that has been interrupted or cancelled, often due to system events or by moving outside of a valid context.
+
+#### Usage
+
+The `SwipeEvent` type is used in event handlers that manage swipe interactions. By providing detailed information about the swipe, including its lifecycle stage and the original event, it allows developers to implement nuanced and responsive behaviors based on the user's actions.
+
+#### Examples
+
+**Handling Swipe Events**
+
+```ts
+function onSwipe(event: SwipeEvent) {
+  switch (event.type) {
+    case 'start':
+      console.log('Swipe started at', event.source);
+      break;
+    case 'move':
+      console.log('Swipe moving to', event.target);
+      break;
+    case 'end':
+      console.log('Swipe ended at', event.target);
+      break;
+    case 'cancel':
+      console.log('Swipe cancelled');
+      break;
+  }
+}
+
+const swipeEvent: SwipeEvent = {
+  ...movementEvent, // assuming movementEvent is a pre-defined MovementEvent object
+  event: new UIEvent('touchmove'),
+  type: 'move'
+};
+
+onSwipe(swipeEvent);
+```

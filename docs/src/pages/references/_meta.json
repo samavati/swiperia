@@ -1,0 +1,20 @@
+{
+  "swipe-config": {
+    "title": "SwipeConfig"
+  },
+  "vector-2": {
+    "title": "Vector2"
+  },
+  "swipe-direction": {
+    "title": "SwipeDirection"
+  },
+  "movement-event": {
+    "title": "MovementEvent"
+  },
+  "swipe-event": {
+    "title": "SwipeEvent"
+  },
+  "swipe-callback": {
+    "title": "SwipeCallback"
+  }
+}

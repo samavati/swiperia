@@ -1,0 +1,75 @@
+# Swiper
+
+## Overview
+
+The `Swiper` class is a central component of the Swiperia library, designed to facilitate the creation and management of swipe interactions within web applications. It leverages modular swipe detectors to handle different types of swipe gestures, making it highly versatile and adaptable to various use cases.
+
+### Constructor
+
+The `Swiper` constructor initializes a new instance of the `Swiper` class.
+
+**Syntax:**
+
+```ts
+new Swiper(element: HTMLElement, detectors: DetectorClass[], config?: SwipeConfig)
+```
+
+**Parameters:**
+
+* `element: HTMLElement` - The DOM element that the swiper will be attached to.
+* `detectors: DetectorClass[]` - An array of classes derived from `AbstractSwiper`. These classes are used to detect specific types of swipe gestures (e.g., mouse swipes, touch swipes).
+* `config?: SwipeConfig` - An optional [configuration](/web-js/configuration) object that specifies various settings for swipe detection, such as thresholds and time limits.
+
+### Methods
+
+##### listen
+
+Attaches event listeners to the element and activates the specified detectors.
+
+**Syntax:**
+
+```ts
+swiper.listen(callback: SwipeCallback): void
+```
+
+**Parameters:**
+
+* `callback: SwipeCallback` - A callback function that is called whenever a swipe event is detected. The function receives a `SwipeEvent` object as its parameter.
+
+**Description:**\
+This method iterates over the provided detectors, instantiates each one with the swiper's element and configuration, and then calls the `listen` method of each detector instance, passing the provided callback. This setup allows the swiper to respond to swipe gestures as defined by the detectors.
+
+##### destroy
+
+Removes all event listeners and cleans up resources used by the swiper.
+
+**Syntax:**
+
+```ts
+swiper.destroy(): void
+```
+
+**Description:**\
+This method iterates over all detector instances stored in the swiper and calls their `destroy` method, which is responsible for removing any event listeners and performing necessary cleanup. This is crucial for avoiding memory leaks and ensuring that the swiper does not continue to process events after it is no longer needed.
+
+### Usage Example
+
+```ts copy
+import { Swiper, MouseSwiper, TouchSwiper } from 'swiperia-js';
+
+const targetElement = document.getElementById('my-swipe-area');
+const swiper = new Swiper(targetElement, [MouseSwiper, TouchSwiper]);
+
+swiper.listen((event) => {
+  console.log('Swipe detected:', event.direction);
+});
+
+// When done with the swiper
+swiper.destroy();
+```
+
+### Remarks
+
+* Ensure that the `destroy` method is called when the swiper is no longer needed to prevent memory leaks.
+* The `Swiper` class is designed to be flexible and extensible, allowing for custom detectors to be easily integrated as needed.
+

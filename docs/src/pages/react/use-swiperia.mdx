@@ -1,0 +1,68 @@
+The `useSwiperia` hook is designed to integrate swipe gesture functionality into React components with ease. It leverages the `swiperia-js` library, which provides robust handling of swipe gestures across different devices (mouse and touch inputs). This hook simplifies the process of setting up and managing the lifecycle of the `Swiper` instance, and it offers customizable swipe event handling through callback functions.
+
+#### Usage
+
+```tsx
+import { useSwiperia } from 'swiperia-react';
+
+const MyComponent = () => {
+  const { ref, swiperia } = useSwiperia({
+    onSwiped: event => console.log('Swiped', event.direction),
+    onSwipeStart: event => console.log('Swipe started', event),
+    onSwiping: event => console.log('Swiping', event),
+    onSwipedLeft: event => console.log('Swiped left', event),
+    onSwipedRight: event => console.log('Swiped right', event),
+    onSwipedUp: event => console.log('Swiped up', event),
+    onSwipedDown: event => console.log('Swiped down', event),
+  });
+
+  return <div ref={ref}>Swipe here</div>;
+};
+```
+
+#### Parameters
+
+* `args` (optional): An object of type `UseSwiperiaArgs` which includes:
+
+  * `config?`: Optional configuration settings for the swipe behavior.
+  * Callbacks for various swipe events:
+
+    * `onSwiped?`: Called when a swipe action completes.
+    * `onSwipeStart?`: Called when a swipe action starts.
+    * `onSwiping?`: Called during a swipe action.
+    * `onSwipedLeft?`, `onSwipedRight?`, `onSwipedUp?`, `onSwipedDown?`: Called when a swipe action completes in the respective direction.
+
+#### Returns
+
+* `ref`: A React ref callback that should be attached to the DOM element intended for swipe detection.
+* `swiperia`: A ref object containing the current instance of `Swiper` from `swiperia-js`, which can be used to directly interact with the underlying swipe functionality.
+
+#### Features
+
+* **Automatic Instance Management**: The hook automatically handles the creation and destruction of the `Swiper` instance, ensuring that resources are properly managed.
+* **Customizable Swipe Detection**: Through the `config` parameter, users can customize various aspects of swipe detection to suit specific needs.
+* **Comprehensive Event Handling**: Offers a rich set of callback props to handle various stages and directions of swipe interactions, making it versatile for different use cases.
+* **Seamless Integration with React**: Designed to work seamlessly within the React ecosystem, utilizing hooks and refs for optimal integration with functional components.
+
+#### Example
+
+Here is a basic example demonstrating how to use the `useSwiperia` hook within a functional component to handle swipe gestures:
+
+```tsx
+import React from 'react';
+import { useSwiperia } from 'swiperia-react';
+
+const SwipeableComponent = () => {
+  const { ref } = useSwiperia({
+    onSwiped: (event) => alert(`Swiped ${event.direction}`),
+    onSwipeStart: () => console.log('Swipe started'),
+    onSwiping: (event) => console.log(`Swiping in direction: ${event.direction}`),
+  });
+
+  return <div ref={ref} style={{ width: '100%', height: '300px', backgroundColor: '#ccc' }}>
+    Swipe here
+  </div>;
+};
+
+export default SwipeableComponent;
+```

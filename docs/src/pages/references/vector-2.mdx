@@ -1,0 +1,51 @@
+#### Overview
+
+The `Vector2` type is a fundamental data structure in the Swiperia library, representing a two-dimensional vector. This type is used extensively across the library to denote positions, movements, and other vector-related calculations in a 2D space.
+
+#### Type Definition
+
+```ts
+export type Vector2 = [number, number];
+```
+
+#### Description
+
+`Vector2` is defined as a tuple of two numbers:
+
+* The first element (`number`) represents the x-coordinate or the horizontal component of the vector.
+* The second element (`number`) represents the y-coordinate or the vertical component of the vector.
+
+#### Usage
+
+The `Vector2` type is primarily used to represent coordinates in a two-dimensional plane, making it suitable for various applications including but not limited to:
+
+* Specifying positions and movements in graphical interfaces.
+* Calculating distances and directions between points.
+* Implementing physics and other simulation systems where 2D vector operations are required.
+
+#### Examples
+
+**Position Representation**
+
+```ts
+// Represents a point at coordinates (150, 75) on a 2D plane
+const point: Vector2 = [150, 75];
+```
+
+**Movement Vector**
+
+```ts
+// Represents a movement vector that moves 30 units right and 20 units up
+const movement: Vector2 = [30, -20];
+```
+
+**Function Parameter**
+
+```ts
+// Function that calculates the magnitude of a 2D vector
+function vectorMagnitude(vector: Vector2): number {
+  return Math.sqrt(vector[0] ** 2 + vector[1] ** 2);
+}
+
+const magnitude = vectorMagnitude([3, 4]);  // Returns 5
+```

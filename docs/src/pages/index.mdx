@@ -1,3 +1,4 @@
+import { Tabs } from 'nextra/components';
 
 # Swiperia
 
@@ -13,32 +14,58 @@ Swiperia is a powerful and flexible library for creating smooth and responsive s
 
 ## Getting Started
 
-To get started with Swiperia, you can install it via npm or yarn:
+<Tabs items={['React', 'Web (JS)']}>
+  <Tabs.Tab>
+  First you need to install the package:
+  ```bash  copy
+  npm install swiperia-react
+  ```
+  then you can import the components you need:
+  ```jsx copy
+  import { useSwiperia } from 'swiperia-react';
 
-```bash
-npm install swiperia
-# or
-yarn add swiperia
-```
+const App = () => {
+  const { ref } = useSwiperia({
+    onSwipedDown: (e) => {
+        // Swiping down has triggered
+    },
+  });
+  return (<div ref={ref}>you can listen to swipes here</div>);
+}
+  ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+  First you need to install the package:
+  ```bash  copy
+  npm install swiperia-js
+  ```
+  then you can import the components you need:
+  ```js copy
+import { Swiper, MouseSwiper, TouchSwiper } from 'swiperia-js';
 
+const target = document.getElementById('draggable');
+const direction = document.getElementById('direction');
 
-Once installed, you can import and use the Swiperia components in your application:
+const swiperia = new Swiper(target, [MouseSwiper, TouchSwiper]);
 
-```bash
-import { Swiper, MouseSwiper, TouchSwiper } from 'swiperia';
-
-const mySwiper = new Swiper(targetElement, [MouseSwiper, TouchSwiper]);
-
-mySwiper.listen((event) => {
-  // Handle swipe events
+swiperia.listen((e) => {
+    switch (e.type) {
+        case 'end':
+            // Swiping has ended
+            break;
+        case 'cancel':
+            // Swiping has been canceled
+            break;
+        case 'start':
+            // Swiping has started
+            break;
+        case 'move':
+            // Swiping is in progress
+            break;
+        default:
+            break;
+    }
 });
-```
-
-## Documentation
-For detailed documentation, including guides, API references, and examples, please visit the Swiperia Documentation.
-
-## Contributing
-We welcome contributions from the community! If you'd like to contribute to Swiperia, please read our Contributing Guide for more information.
-
-## License
-Swiperia is released under the MIT License.
+  ```
+  </Tabs.Tab>
+</Tabs>
