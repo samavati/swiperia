@@ -83,4 +83,4 @@ All packages in this repository are MIT licensed.
 - Thanks to Nx for the monorepo management tools.
 - Thanks to all contributors who have helped to shape this project.
 
-For more detailed documentation, please refer to the individual package directories within this repository.
+For more detailed documentation, please refer to the individual package directories within this repository
