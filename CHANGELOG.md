@@ -1,3 +1,19 @@
+## 1.0.1 (2024-05-30)
+
+
+### 🚀 Features
+
+- **docs:** :memo: docs setup added ([d7a3b70](https://github.com/samavati/swiperia/commit/d7a3b70))
+
+### 🩹 Fixes
+
+- **swiperia-react:** :bug: correct versioning ([27c1dff](https://github.com/samavati/swiperia/commit/27c1dff))
+- **swiperia-react:** :bug: automatic package versioning ([a2af35d](https://github.com/samavati/swiperia/commit/a2af35d))
+
+### ❤️  Thank You
+
+- Ehsan Samavati
+
 # 1.0.0 (2024-04-26)
 
 
