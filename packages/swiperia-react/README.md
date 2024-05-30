@@ -20,7 +20,6 @@ npm install swiperia-react
 yarn add swiperia-react
 ```
 
-
 ## Usage
 Here's a basic example of how to use the swiperia-react package:
 
