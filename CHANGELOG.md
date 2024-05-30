@@ -1,3 +1,15 @@
+## 1.0.2 (2024-05-30)
+
+
+### 🩹 Fixes
+
+- **swiperia-react:** lets fix minor issue with the react package ([35940c9](https://github.com/samavati/swiperia/commit/35940c9))
+- **swiperia-react:** :art: fix the issue ([811e3df](https://github.com/samavati/swiperia/commit/811e3df))
+
+### ❤️  Thank You
+
+- Ehsan Samavati
+
 ## 1.0.1 (2024-05-30)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "swiperia-react",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "dependencies": {
     "swiperia-core": "1.0.0",
     "swiperia-js": "1.0.0"
