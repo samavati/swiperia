@@ -33,9 +33,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npx nx run-many --target=build --all=true
-
       - name: Apply updates versions to packages and publish
         run: |
           VERSION=${{ github.event.inputs.version || github.ref_name }}
