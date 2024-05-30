@@ -1,7 +1,9 @@
 {
   "name": "swiperia-js",
-  "version": "0.0.1",
-  "dependencies": {},
+  "version": "1.0.0",
+  "dependencies": {
+    "swiperia-core": "1.0.0"
+  },
   "main": "./index.js",
   "module": "./index.mjs",
   "typings": "./index.d.ts"

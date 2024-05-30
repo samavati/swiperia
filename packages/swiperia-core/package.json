@@ -1,6 +1,6 @@
 {
   "name": "swiperia-core",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "dependencies": {},
   "main": "./index.js",
   "module": "./index.mjs",
