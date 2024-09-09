@@ -1,11 +1,31 @@
 {
   "name": "swiperia-react",
   "version": "1.0.2",
-  "dependencies": {
-    "swiperia-core": "1.0.0",
-    "swiperia-js": "1.0.0"
+  "description": "Swiperia React: A powerful suite of JavaScript libraries for building intuitive swipe-driven user interfaces. Provides core gesture handling, web-specific implementations, and React components for seamless integration.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samavati/swiperia.git"
   },
-  "main": "./index.js",
+  "bugs": {
+    "url": "https://github.com/samavati/swiperia/issues"
+  },
+  "homepage": "https://github.com/samavati/swiperia#readme",
+  "keywords": [
+    "swipe",
+    "gesture",
+    "touch",
+    "mobile",
+    "react",
+    "javascript",
+    "ui",
+    "interaction"
+  ],
+  "dependencies": {
+    "swiperia-core": "1.0.1",
+    "swiperia-js": "1.0.1"
+  },
+  "main": "./index.umd.js",
   "module": "./index.mjs",
   "typings": "./index.d.ts"
 }

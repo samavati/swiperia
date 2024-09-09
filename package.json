@@ -1,7 +1,26 @@
 {
   "name": "swiperia",
   "version": "0.0.0",
+  "description": "A collection of JavaScript libraries for seamless swipe gesture integration. Includes platform-agnostic core utilities, web-specific implementations, and React components, empowering developers to enhance user experiences with intuitive swipe interactions.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samavati/swiperia.git"
+  },
+  "bugs": {
+    "url": "https://github.com/samavati/swiperia/issues"
+  },
+  "homepage": "https://github.com/samavati/swiperia#readme",
+  "keywords": [
+    "swipe",
+    "gesture",
+    "touch",
+    "mobile",
+    "react",
+    "javascript",
+    "ui",
+    "interaction"
+  ],
   "scripts": {},
   "private": true,
   "dependencies": {

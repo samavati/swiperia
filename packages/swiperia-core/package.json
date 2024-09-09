@@ -1,8 +1,28 @@
 {
   "name": "swiperia-core",
-  "version": "1.0.0",
+  "version": "1.0.1m",
+  "description": "Swiperia Core: The foundational engine for handling swipe gestures in JavaScript. Provides platform-agnostic utilities to detect swipe direction, calculate distance and velocity, and analyze swipe movement data.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samavati/swiperia.git"
+  },
+  "bugs": {
+    "url": "https://github.com/samavati/swiperia/issues"
+  },
+  "homepage": "https://github.com/samavati/swiperia#readme",
+  "keywords": [
+    "swipe",
+    "gesture",
+    "touch",
+    "mobile",
+    "react",
+    "javascript",
+    "ui",
+    "interaction"
+  ],
   "dependencies": {},
-  "main": "./index.js",
+  "main": "./index.umd.js",
   "module": "./index.mjs",
   "typings": "./index.d.ts"
 }
