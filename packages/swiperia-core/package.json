@@ -1,6 +1,6 @@
 {
   "name": "swiperia-core",
-  "version": "1.0.1m",
+  "version": "1.0.1",
   "description": "Swiperia Core: The foundational engine for handling swipe gestures in JavaScript. Provides platform-agnostic utilities to detect swipe direction, calculate distance and velocity, and analyze swipe movement data.",
   "license": "MIT",
   "repository": {
