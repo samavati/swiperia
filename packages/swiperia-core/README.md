@@ -41,7 +41,7 @@ console.log('Swipe Movement:', swipeData);
 ```
 
 ## Documentation
-For detailed documentation, including API references and advanced usage examples, please visit the Swiperia Documentation.
+For detailed documentation, including API references and advanced usage examples, please visit the [Swiperia Documentation](https://samavati.github.io/swiperia/).
 
 ## Contributing
 We welcome contributions from the community! If you'd like to contribute to Swiperia Core, please read our Contributing Guide for more information.

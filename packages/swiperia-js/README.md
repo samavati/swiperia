@@ -50,7 +50,7 @@ swiper.listen((event) => {
 ```
 
 ## Documentation
-For detailed documentation, including API references, advanced usage examples, and guides on creating custom swipe detectors, please visit the Swiperia Documentation.
+For detailed documentation, including API references, advanced usage examples, and guides on creating custom swipe detectors, please visit the [Swiperia Documentation](https://samavati.github.io/swiperia/).
 
 ## Contributing
 We welcome contributions from the community! If you'd like to contribute to Swiperia JS, please read our Contributing Guide for more information.
