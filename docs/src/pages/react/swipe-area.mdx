@@ -1,10 +1,10 @@
 #### Overview
 
-The `SwipeArea` component is a versatile React component designed to facilitate swipe gesture detection and handling within a React application. It leverages the `useSwiperia` hook from the `swiperia-react` library to provide a seamless integration of swipe functionalities. This component wraps any child content and automatically manages swipe gestures, making it ideal for implementing interactive, touch-responsive elements.
+The `SwipeArea` component is a versatile React component designed to facilitate swipe gesture detection and handling within a React application. It leverages the `useSwiperia` hook from the `swiperia-react` library to provide a seamless integration of swipe functionalities. This component wraps any child content and automatically manages swipe gestures, making it ideal for implementing interactive, touch-responsive elements.
 
 #### Props
 
-The `SwipeArea` component accepts all standard swipe event callbacks provided by the `swiperia-react` library, along with all standard properties of a `div` element. Here are the specific swipe-related props it supports:
+The `SwipeArea` component accepts all standard swipe event callbacks provided by the `swiperia-react` library, along with all standard properties of a `div` element. Here are the specific swipe-related props it supports:
 
 * **onSwipeStart**: Function called at the start of a swipe gesture.
 * **onSwiped**: Function called when a swipe gesture is completed.
@@ -13,16 +13,17 @@ The `SwipeArea` component accepts all standard swipe event callbacks provided 
 * **onSwipedRight**: Function called specifically when a swipe right gesture is completed.
 * **onSwipedUp**: Function called specifically when a swipe up gesture is completed.
 * **onSwiping**: Function called with each movement during an active swipe gesture.
+* **onSwipeCancelled**: Function called when the swipe is cancelled.
 
 These callbacks provide a way to respond to different phases and directions of swipe gestures, allowing for detailed interaction design within your application.
 
 #### Usage
 
-Here is a basic example of how to use the `SwipeArea` component:
+Here is a basic example of how to use the `SwipeArea` component:
 
 ```jsx
 import React from 'react';
-import SwipeArea from 'swiperia-react';
+import { SwipeArea, SwipeCallback } from 'swiperia-react';
 
 const MySwipeableComponent = () => {
   return (
@@ -42,8 +43,8 @@ export default MySwipeableComponent;
 
 #### Integration Details
 
-* **Ref Forwarding**: The `SwipeArea` component forwards a ref to the underlying div element. This is useful for managing focus, animations, or direct DOM manipulation.
-* **Combining with other props**: All other props not related to swipe functionalities (like `className`, `style`, etc.) are passed down to the root div element. This makes it easy to style and position the `SwipeArea` as needed.
+* **Ref Forwarding**: The `SwipeArea` component forwards a ref to the underlying div element. This is useful for managing focus, animations, or direct DOM manipulation.
+* **Combining with other props**: All other props not related to swipe functionalities (like `className`, `style`, etc.) are passed down to the root div element. This makes it easy to style and position the `SwipeArea` as needed.
 
 #### Best Practices
 

@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { type SwipeEvent, type SwipeConfig } from 'swiperia-core';
-import { Swiper, MouseSwiper, TouchSwiper } from 'swiperia-js';
+import { MouseSwiper, Swiper, TouchSwiper } from 'swiperia-js';
 import { type SwiperiaCallbacks } from '../types';
 
 export interface UseSwiperiaArgs extends SwiperiaCallbacks {
@@ -8,54 +8,83 @@ export interface UseSwiperiaArgs extends SwiperiaCallbacks {
 }
 
 export const useSwiperia = (args?: UseSwiperiaArgs) => {
-  const [el, setEl] = useState<HTMLElement | null>(null);
+  const el = useRef<HTMLElement | null>(null);
   const swiperia = useRef<Swiper | null>(null);
 
-  const ref = useCallback((node: HTMLElement | null) => {
-    if (!node || el) return;
-    setEl(node);
+  const destroy = useCallback(() => {
+    if (swiperia.current) {
+      swiperia.current.destroy();
+      swiperia.current = null;
+    }
   }, []);
 
-  const callback = useCallback(
-    (e: SwipeEvent) => {
-      switch (e.type) {
-        case 'end':
-          args?.onSwiped?.(e);
-          switch (e.direction) {
-            case 'down':
-              args?.onSwipedDown?.(e);
-              break;
-            case 'left':
-              args?.onSwipedLeft?.(e);
-              break;
-            case 'right':
-              args?.onSwipedRight?.(e);
-              break;
-            case 'up':
-              args?.onSwipedUp?.(e);
-              break;
-          }
-          break;
-        case 'start':
-          args?.onSwipeStart?.(e);
-          break;
-        case 'move':
-          args?.onSwiping?.(e);
-          break;
+  const listen = useCallback(() => {
+    if (el.current) {
+      swiperia.current = new Swiper(
+        el.current,
+        [MouseSwiper, TouchSwiper],
+        args?.config
+      );
+      swiperia.current?.listen((e: SwipeEvent) => {
+        switch (e.type) {
+          case 'end':
+            args?.onSwiped?.(e);
+            switch (e.direction) {
+              case 'down':
+                args?.onSwipedDown?.(e);
+                break;
+              case 'left':
+                args?.onSwipedLeft?.(e);
+                break;
+              case 'right':
+                args?.onSwipedRight?.(e);
+                break;
+              case 'up':
+                args?.onSwipedUp?.(e);
+                break;
+            }
+            break;
+          case 'start':
+            args?.onSwipeStart?.(e);
+            break;
+          case 'move':
+            args?.onSwiping?.(e);
+            break;
+          case 'cancel':
+            args?.onSwipeCancelled?.(e);
+            break;
+        }
+      });
+    }
+  }, [
+    args?.config,
+    args?.onSwiped,
+    args?.onSwipedDown,
+    args?.onSwipedLeft,
+    args?.onSwipedRight,
+    args?.onSwipedUp,
+    args?.onSwipeStart,
+    args?.onSwiping,
+    args?.onSwipeCancelled,
+  ]);
+
+  const ref = useCallback(
+    (node: HTMLElement | null) => {
+      if (node && !node.isEqualNode(el.current)) {
+        el.current = node;
+        destroy();
+        listen();
       }
     },
-    [args]
+    [destroy, listen]
   );
 
   useEffect(() => {
-    if (!el) return;
-    swiperia.current = new Swiper(el, [MouseSwiper, TouchSwiper]);
-    swiperia.current.listen(callback);
+    listen();
     return () => {
-      swiperia.current?.destroy();
-      swiperia.current = null;
+      destroy();
     };
-  }, [callback, el]);
+  }, [listen, destroy]);
 
   return { ref, swiperia };
 };

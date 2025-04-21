@@ -7,3 +7,5 @@ export {
   default as SwipeArea,
   type SwipeAreaProps,
 } from './lib/SwipeArea/SwipeArea';
+
+export * from './lib/types';
