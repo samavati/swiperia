@@ -20,6 +20,7 @@ const SwipeArea = forwardRef<HTMLDivElement, SwipeAreaProps>(
       onSwipedRight,
       onSwipedUp,
       onSwiping,
+      onSwipeCancelled,
       ...props
     },
     ref
@@ -32,6 +33,7 @@ const SwipeArea = forwardRef<HTMLDivElement, SwipeAreaProps>(
       onSwipedRight,
       onSwipedUp,
       onSwiping,
+      onSwipeCancelled,
     });
 
     const handleRef = useCallback(
