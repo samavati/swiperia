@@ -1,6 +1,6 @@
 {
   "name": "swiperia-react",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "module",
   "description": "Swiperia React: A powerful suite of JavaScript libraries for building intuitive swipe-driven user interfaces. Provides core gesture handling, web-specific implementations, and React components for seamless integration.",
   "license": "MIT",
@@ -26,7 +26,14 @@
     "swiperia-core": "1.0.2",
     "swiperia-js": "1.0.2"
   },
-  "main": "./index.umd.js",
-  "module": "./index.mjs",
-  "typings": "./index.d.ts"
+  "main": "./index.umd.cjs",
+  "module": "./index.js",
+  "typings": "./index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "require": "./index.umd.cjs",
+      "types": "./index.d.ts"
+    }
+  }
 }
