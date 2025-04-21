@@ -52,6 +52,7 @@ describe('useSwiperia', () => {
     const onSwipedUp = vi.fn();
     const onSwipeStart = vi.fn();
     const onSwiping = vi.fn();
+    const onSwipeCancelled = vi.fn();
 
     const { result } = renderHook(() =>
       useSwiperia({
@@ -62,6 +63,7 @@ describe('useSwiperia', () => {
         onSwipedUp,
         onSwipeStart,
         onSwiping,
+        onSwipeCancelled,
       })
     );
 
@@ -82,6 +84,7 @@ describe('useSwiperia', () => {
     expect(onSwipedRight).not.toHaveBeenCalled();
     expect(onSwipedUp).not.toHaveBeenCalled();
     expect(onSwipedLeft).not.toHaveBeenCalled();
+    expect(onSwipeCancelled).not.toHaveBeenCalled();
   });
 
   it('should destroy the Swiper instance on cleanup', () => {
