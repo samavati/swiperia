@@ -29,7 +29,7 @@ const nextConfig = {
   },
 };
 
-// @ts-ignore
+// @ts-expect-error nextra's typings expose no call signature for its default export (TS2349)
 const withNextra = nextra({
   theme: 'nextra-theme-docs',
   themeConfig: './theme.config.tsx',

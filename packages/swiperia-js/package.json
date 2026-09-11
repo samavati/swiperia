@@ -23,7 +23,7 @@
     "interaction"
   ],
   "dependencies": {
-    "swiperia-core": "1.0.1"
+    "swiperia-core": "1.0.2"
   },
   "main": "./index.umd.js",
   "module": "./index.mjs",

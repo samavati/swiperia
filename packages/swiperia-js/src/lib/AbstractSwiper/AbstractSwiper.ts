@@ -21,8 +21,8 @@ import {
  */
 export abstract class AbstractSwiper {
   protected _source: Vector2 = [0, 0];
-  protected _startTime: number = 0;
-  protected _callback: SwipeCallback = () => {};
+  protected _startTime = 0;
+  protected _callback: SwipeCallback = () => undefined;
   protected _config: Required<SwipeConfig> = {
     threshold: 10,
     allowedTime: 300,

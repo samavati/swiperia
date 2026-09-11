@@ -13,7 +13,7 @@ export class Swiper {
   ) {}
 
   listen(callback: SwipeCallback) {
-    for (let Detector of this.detectors) {
+    for (const Detector of this.detectors) {
       const instance = new Detector(this.el, this.config);
       this._detectors.push(instance);
       instance.listen(callback);
@@ -21,7 +21,7 @@ export class Swiper {
   }
 
   destroy() {
-    for (let detector of this._detectors) {
+    for (const detector of this._detectors) {
       detector.destroy();
     }
   }
