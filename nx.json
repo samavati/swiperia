@@ -9,13 +9,28 @@
   "targetDefaults": {
     "@nx/vite:build": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["default", "^default"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "default",
+        "^default"
+      ]
     },
     "@nx/rollup:rollup": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["default", "^default"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "default",
+        "^default"
+      ]
+    },
+    "e2e-ci--**/*": {
+      "dependsOn": [
+        "^build"
+      ]
     }
   },
   "release": {
@@ -90,5 +105,6 @@
         "linter": "eslint"
       }
     }
-  }
+  },
+  "analytics": false
 }
