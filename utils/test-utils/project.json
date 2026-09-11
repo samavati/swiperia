@@ -1,7 +1,7 @@
 {
   "name": "test-utils",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "utils/src",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "utils/test-utils/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -10,9 +10,9 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/utils",
-        "main": "utils/src/index.ts",
-        "tsConfig": "utils/tsconfig.lib.json",
-        "assets": ["utils/*.md"]
+        "main": "utils/test-utils/src/index.ts",
+        "tsConfig": "utils/test-utils/tsconfig.lib.json",
+        "assets": ["utils/test-utils/*.md"]
       }
     }
   }
