@@ -77,4 +77,15 @@ describe('MouseSwiper', () => {
     addEventListenerSpy.mockRestore();
     removeEventListenerSpy.mockRestore();
   });
+
+  it('should stop tracking the swipe when destroyed from the start callback', () => {
+    const onEvent = vi.fn((e: { type: string }) => {
+      if (e.type === 'start') mouseSwiper.destroy();
+    });
+    mouseSwiper.listen(onEvent);
+    el.dispatchEvent(startEvent);
+    window.dispatchEvent(endEvent);
+
+    expect(onEvent).toHaveBeenCalledTimes(1);
+  });
 });

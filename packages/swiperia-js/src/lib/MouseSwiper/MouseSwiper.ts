@@ -11,9 +11,10 @@ export class MouseSwiper extends AbstractSwiper {
   }
 
   protected override _start(e: UIEvent): void {
-    super._start(e);
+    // Add the listeners before the callback runs, so a destroy() from it removes them.
     window.addEventListener('mousemove', this._move, false);
     window.addEventListener('mouseup', this._end, false);
+    super._start(e);
   }
 
   protected override _end(e: UIEvent): void {
