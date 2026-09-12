@@ -1,5 +1,5 @@
-import { Vector2 } from '../types/Vector2.type';
-import { distance } from './distance';
+import type { Vector2 } from '../types/Vector2.type.js';
+import { distance } from './distance.js';
 
 describe('distance', () => {
   it('should calculate the distance between two points', () => {

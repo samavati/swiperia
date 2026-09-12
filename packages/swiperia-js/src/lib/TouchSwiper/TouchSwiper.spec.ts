@@ -1,9 +1,9 @@
-import { Mock, vi } from 'vitest';
-import { SwipeConfig } from 'swiperia-core';
-import { MockTouch } from 'test-utils';
-import { TouchSwiper } from './TouchSwiper';
+import type { SwipeConfig } from 'swiperia-core';
+import { vi, type Mock } from 'vitest';
+import { MockTouch } from '../../testing/mock-touch.js';
+import { TouchSwiper } from './TouchSwiper.js';
 
-// Mock the window.Touch object
+// jsdom does not implement the Touch constructor.
 if (typeof window.Touch === 'undefined') {
   window.Touch = MockTouch;
 }
@@ -20,9 +20,7 @@ describe('TouchSwiper', () => {
     touchSwiper?.destroy();
     callback = vi.fn();
     el = document.createElement('div');
-    config = {
-      threshold: 10,
-    };
+    config = { threshold: 10 };
     touchSwiper = new TouchSwiper(el, config);
     const start = new Touch({
       clientX: 100,
@@ -44,7 +42,7 @@ describe('TouchSwiper', () => {
     expect(touchSwiper).toBeInstanceOf(TouchSwiper);
   });
 
-  it('should return correct point from mouse event', () => {
+  it('should return correct point from touch event', () => {
     const point = touchSwiper.point(startEvent);
     expect(point).toEqual([100, 200]);
   });
@@ -80,7 +78,7 @@ describe('TouchSwiper', () => {
     expect(addEventListenerSpy).toHaveBeenCalledWith(
       'touchstart',
       expect.anything(),
-      false
+      false,
     );
 
     touchSwiper.destroy();
@@ -88,7 +86,7 @@ describe('TouchSwiper', () => {
     expect(removeEventListenerSpy).toHaveBeenCalledWith(
       'touchstart',
       expect.anything(),
-      false
+      false,
     );
 
     addEventListenerSpy.mockRestore();

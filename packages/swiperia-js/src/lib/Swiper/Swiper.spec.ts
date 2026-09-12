@@ -1,25 +1,31 @@
-import { vi, Mock } from 'vitest';
-import { Swiper } from './Swiper';
+import type { SwipeCallback, SwipeConfig } from 'swiperia-core';
+import { vi, type Mock } from 'vitest';
+import { AbstractSwiper } from '../AbstractSwiper/AbstractSwiper.js';
+import { Swiper } from './Swiper.js';
 
 describe('Swiper', () => {
   let swiper: Swiper;
   let el: HTMLElement;
-  let detectors: Mock[];
+  let detector: Mock;
+  let listen: Mock;
   let destroy: Mock;
-  let config: any;
-  let callback: Mock;
+  let config: SwipeConfig;
+  let callback: SwipeCallback;
 
   beforeEach(() => {
     el = document.createElement('div');
-    const detector = vi.fn();
-    const listen = vi.fn();
+    detector = vi.fn();
+    listen = vi.fn();
     destroy = vi.fn();
     detector.prototype.listen = listen;
     detector.prototype.destroy = destroy;
     callback = vi.fn();
-    detectors = [detector];
     config = { threshold: 10 };
-    swiper = new Swiper(el, detectors, config);
+    swiper = new Swiper(
+      el,
+      [detector as unknown as new () => AbstractSwiper],
+      config,
+    );
   });
 
   afterEach(() => {
@@ -33,10 +39,8 @@ describe('Swiper', () => {
   it('should create instances of detectors and listen for swipe events', () => {
     swiper.listen(callback);
 
-    expect(detectors[0]).toHaveBeenCalledWith(el, config);
-    expect(detectors[0].mock.instances[0].listen).toHaveBeenCalledWith(
-      callback
-    );
+    expect(detector).toHaveBeenCalledWith(el, config);
+    expect(listen).toHaveBeenCalledWith(callback);
   });
 
   it('should destroy all detector instances', () => {
@@ -44,5 +48,13 @@ describe('Swiper', () => {
     swiper.destroy();
 
     expect(destroy).toHaveBeenCalled();
+  });
+
+  it('should not destroy an instance twice', () => {
+    swiper.listen(callback);
+    swiper.destroy();
+    swiper.destroy();
+
+    expect(destroy).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,106 +1,122 @@
-import { renderHook, act } from '@testing-library/react';
-import { vi } from 'vitest';
+import { act, renderHook } from '@testing-library/react';
 import { Swiper } from 'swiperia-js';
-import { useSwiperia } from './useSwiperia';
-import { MouseEvents } from 'test-utils';
+import { vi } from 'vitest';
+import { MouseEvents } from '../../testing/mouse-events.js';
+import { useSwiperia } from './useSwiperia.js';
 
 describe('useSwiperia', () => {
   it('should initialize swiperia and return a ref', () => {
-    const { result } = renderHook(useSwiperia);
-    const { ref } = result.current;
+    const { result } = renderHook(() => useSwiperia());
 
-    expect(ref).toBeDefined();
-    expect(typeof ref).toBe('function');
+    expect(typeof result.current.ref).toBe('function');
   });
 
-  it('should create a new Swiper instance when the ref is called with a valid node', () => {
-    const { result } = renderHook(useSwiperia);
-    const { ref } = result.current;
+  it('should create a Swiper instance when the ref is called with a node', () => {
+    const { result } = renderHook(() => useSwiperia());
 
-    const node = document.createElement('div');
     act(() => {
-      ref(node);
+      result.current.ref(document.createElement('div'));
     });
 
-    expect(result.current.swiperia.current).toBeDefined();
     expect(result.current.swiperia.current).toBeInstanceOf(Swiper);
   });
 
-  it('should not destroy the Swiper instance when the ref is called with null', () => {
-    const { result } = renderHook(useSwiperia);
-    const { ref } = result.current;
-
-    const node = document.createElement('div');
-    act(() => {
-      ref(node);
-    });
-
-    expect(result.current.swiperia.current).toBeDefined();
+  it('should keep the Swiper instance when the ref is called with null', () => {
+    const { result } = renderHook(() => useSwiperia());
 
     act(() => {
-      ref(null);
+      result.current.ref(document.createElement('div'));
+    });
+    const instance = result.current.swiperia.current;
+
+    act(() => {
+      result.current.ref(null);
     });
 
-    expect(result.current.swiperia.current).toBeDefined();
+    expect(result.current.swiperia.current).toBe(instance);
   });
 
-  it('should call the appropriate callback when a swipe event occurs', async () => {
-    const onSwiped = vi.fn();
-    const onSwipedDown = vi.fn();
-    const onSwipedLeft = vi.fn();
-    const onSwipedRight = vi.fn();
-    const onSwipedUp = vi.fn();
-    const onSwipeStart = vi.fn();
-    const onSwiping = vi.fn();
-    const onSwipeCancelled = vi.fn();
+  it('should replace the Swiper instance when the ref moves to another node', () => {
+    const { result } = renderHook(() => useSwiperia());
 
-    const { result } = renderHook(() =>
-      useSwiperia({
-        onSwiped,
-        onSwipedDown,
-        onSwipedLeft,
-        onSwipedRight,
-        onSwipedUp,
-        onSwipeStart,
-        onSwiping,
-        onSwipeCancelled,
-      })
-    );
+    act(() => {
+      result.current.ref(document.createElement('div'));
+    });
+    const first = result.current.swiperia.current;
+    const destroy = vi.spyOn(first as Swiper, 'destroy');
 
-    const { ref } = result.current;
+    act(() => {
+      result.current.ref(document.createElement('div'));
+    });
+
+    expect(destroy).toHaveBeenCalled();
+    expect(result.current.swiperia.current).not.toBe(first);
+  });
+
+  it('should call the appropriate callbacks when a swipe occurs', async () => {
+    const handlers = {
+      onSwiped: vi.fn(),
+      onSwipedDown: vi.fn(),
+      onSwipedLeft: vi.fn(),
+      onSwipedRight: vi.fn(),
+      onSwipedUp: vi.fn(),
+      onSwipeStart: vi.fn(),
+      onSwiping: vi.fn(),
+      onSwipeCancelled: vi.fn(),
+    };
+
+    const { result } = renderHook(() => useSwiperia(handlers));
 
     const node = document.createElement('div');
     act(() => {
-      ref(node);
+      result.current.ref(node);
     });
 
     await act(async () => {
-      const event = new MouseEvents(node);
-      await event.swipeDown();
+      await new MouseEvents(node).swipeDown();
     });
 
-    expect(onSwiped).toHaveBeenCalled();
-    expect(onSwipedDown).toHaveBeenCalled();
-    expect(onSwipedRight).not.toHaveBeenCalled();
-    expect(onSwipedUp).not.toHaveBeenCalled();
-    expect(onSwipedLeft).not.toHaveBeenCalled();
-    expect(onSwipeCancelled).not.toHaveBeenCalled();
+    expect(handlers.onSwipeStart).toHaveBeenCalled();
+    expect(handlers.onSwiped).toHaveBeenCalled();
+    expect(handlers.onSwipedDown).toHaveBeenCalled();
+    expect(handlers.onSwipedRight).not.toHaveBeenCalled();
+    expect(handlers.onSwipedUp).not.toHaveBeenCalled();
+    expect(handlers.onSwipedLeft).not.toHaveBeenCalled();
+    expect(handlers.onSwipeCancelled).not.toHaveBeenCalled();
   });
 
-  it('should destroy the Swiper instance on cleanup', () => {
-    const { result, unmount } = renderHook(useSwiperia);
-    const { ref } = result.current;
+  it('should keep using the latest callbacks without re-attaching listeners', () => {
+    const first = vi.fn();
+    const second = vi.fn();
+    const { result, rerender } = renderHook(
+      ({ onSwipeStart }) => useSwiperia({ onSwipeStart }),
+      { initialProps: { onSwipeStart: first } },
+    );
 
     const node = document.createElement('div');
     act(() => {
-      ref(node);
+      result.current.ref(node);
     });
+    const instance = result.current.swiperia.current;
 
-    expect(result.current.swiperia.current).toBeDefined();
+    rerender({ onSwipeStart: second });
+    new MouseEvents(node).start();
+
+    expect(result.current.swiperia.current).toBe(instance);
+    expect(second).toHaveBeenCalled();
+    expect(first).not.toHaveBeenCalled();
+  });
+
+  it('should destroy the Swiper instance on unmount', () => {
+    const { result, unmount } = renderHook(() => useSwiperia());
 
     act(() => {
-      unmount();
+      result.current.ref(document.createElement('div'));
     });
+
+    expect(result.current.swiperia.current).toBeInstanceOf(Swiper);
+
+    unmount();
 
     expect(result.current.swiperia.current).toBeNull();
   });

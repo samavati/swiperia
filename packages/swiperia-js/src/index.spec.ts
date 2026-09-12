@@ -1,19 +1,10 @@
-import * as swiperia_js from './index';
+import * as swiperiaJs from './index.js';
 
-describe('swiperia js module', () => {
-  it('should export the AbstractSwiper class', () => {
-    expect(swiperia_js.AbstractSwiper).toBeDefined();
-  });
-
-  it('should export the MouseSwiper class', () => {
-    expect(swiperia_js.MouseSwiper).toBeDefined();
-  });
-
-  it('should export the TouchSwiper class', () => {
-    expect(swiperia_js.TouchSwiper).toBeDefined();
-  });
-
-  it('should export the Swiper class', () => {
-    expect(swiperia_js.Swiper).toBeDefined();
-  });
+describe('swiperia-js public api', () => {
+  it.each(['AbstractSwiper', 'MouseSwiper', 'TouchSwiper', 'Swiper'])(
+    'should export %s',
+    (name) => {
+      expect(swiperiaJs[name as keyof typeof swiperiaJs]).toBeDefined();
+    },
+  );
 });

@@ -1,7 +1,7 @@
-import { render as _render, fireEvent } from '@testing-library/react';
+import { render as _render } from '@testing-library/react';
 import { vi } from 'vitest';
-import { MouseEvents } from 'test-utils';
-import SwipeArea from './SwipeArea';
+import { MouseEvents } from '../../testing/mouse-events.js';
+import SwipeArea from './SwipeArea.js';
 
 const render = () => {
   const props = {
@@ -13,16 +13,14 @@ const render = () => {
     onSwipedUp: vi.fn(),
     onSwiping: vi.fn(),
   };
-  const ui = (
+  const { getByTestId } = _render(
     <SwipeArea
       style={{ width: '500px', height: '500px' }}
       data-testid="swiperia"
       {...props}
-    />
+    />,
   );
-  const { getByTestId } = _render(ui);
-  const el = getByTestId('swiperia');
-  const events = new MouseEvents(el);
+  const events = new MouseEvents(getByTestId('swiperia'));
   return { ...props, events };
 };
 
@@ -31,7 +29,7 @@ describe('SwipeArea', () => {
     const { getByText } = _render(
       <SwipeArea>
         <div>Test Content</div>
-      </SwipeArea>
+      </SwipeArea>,
     );
     expect(getByText('Test Content')).toBeTruthy();
   });
@@ -90,5 +88,12 @@ describe('SwipeArea', () => {
     events.start();
     events.move();
     expect(onSwiping).toHaveBeenCalled();
+  });
+
+  it('should forward unknown props to the underlying element', () => {
+    const { getByTestId } = _render(
+      <SwipeArea data-testid="swiperia" aria-label="swipe me" />,
+    );
+    expect(getByTestId('swiperia').getAttribute('aria-label')).toBe('swipe me');
   });
 });
