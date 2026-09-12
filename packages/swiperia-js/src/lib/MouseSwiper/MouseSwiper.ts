@@ -1,5 +1,5 @@
 import type { Vector2, SwipeCallback, SwipeConfig } from 'swiperia-core';
-import { AbstractSwiper } from '../AbstractSwiper/AbstractSwiper';
+import { AbstractSwiper } from '../AbstractSwiper/AbstractSwiper.js';
 
 export class MouseSwiper extends AbstractSwiper {
   constructor(el: HTMLElement, config?: SwipeConfig) {

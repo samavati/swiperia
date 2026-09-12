@@ -1,6 +1,6 @@
-import type { Vector2 } from '../types/Vector2.type';
+import type { Vector2 } from '../types/Vector2.type.js';
 
-import { distance } from '../distance/distance';
+import { distance } from '../distance/distance.js';
 
 /**
  * Calculates the velocity vector (vx, vy) between two points over a given time delta.
@@ -31,6 +31,5 @@ export const vxvy = (a: Vector2, b: Vector2, dt: number): Vector2 => {
 export const velocity = (a: Vector2, b: Vector2, dt: number): number => {
   if (dt < 0) throw new Error('Time delta must be positive.');
   if (dt === 0) return Infinity;
-  const _distance = distance(a, b);
-  return _distance / dt;
+  return distance(a, b) / dt;
 };

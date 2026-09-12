@@ -1,5 +1,5 @@
-import type { SwipeDirection } from './SwipeDirection.type';
-import type { Vector2 } from './Vector2.type';
+import type { SwipeDirection } from './SwipeDirection.type.js';
+import type { Vector2 } from './Vector2.type.js';
 
 /**
  * Represents a movement event,
@@ -48,7 +48,7 @@ export interface MovementEvent {
    */
   velocity: number;
   /**
-   * deltaX/time, deltaY/time] - velocity per axis
+   * [deltaX/time, deltaY/time] - velocity per axis
    */
   vxvy: Vector2;
   /**

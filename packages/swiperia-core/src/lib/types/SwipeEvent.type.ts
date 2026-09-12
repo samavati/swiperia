@@ -1,4 +1,4 @@
-import type { MovementEvent } from './MovementEvent.type';
+import type { MovementEvent } from './MovementEvent.type.js';
 
 /**
  * Represents a swipe event, which extends the `MovementEvent` type.

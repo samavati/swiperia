@@ -1,4 +1,4 @@
-import { SwipeCallback } from 'swiperia-core';
+import type { SwipeCallback } from 'swiperia-core';
 
 export type { SwipeCallback };
 

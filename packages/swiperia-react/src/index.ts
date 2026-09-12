@@ -1,11 +1,15 @@
 export {
-  type UseSwiperiaArgs,
   useSwiperia,
-} from './lib/useSwiperia/useSwiperia';
+  type UseSwiperiaArgs,
+} from './lib/useSwiperia/useSwiperia.js';
 
 export {
   default as SwipeArea,
   type SwipeAreaProps,
-} from './lib/SwipeArea/SwipeArea';
+} from './lib/SwipeArea/SwipeArea.js';
 
-export * from './lib/types';
+export type {
+  SwipeCallback,
+  SwiperiaCallbacks,
+  SwiperiaDirectionCallbacks,
+} from './lib/types.js';
