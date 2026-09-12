@@ -1,0 +1,46 @@
+---
+title: Introduction
+description: Swipe detection for the browser with swiperia-js.
+---
+
+`swiperia-js` turns browser input into swipe events. It gives you two detectors —
+[`MouseSwiper` and `TouchSwiper`](/docs/web/detectors) — and a [`Swiper`](/docs/web/swiper)
+that runs several of them over one element so you do not care which device the user has.
+
+```package-install
+swiperia-js
+```
+
+## Usage
+
+```ts
+import { MouseSwiper, Swiper, TouchSwiper } from 'swiperia-js';
+
+const el = document.getElementById('swipeable')!;
+const swiper = new Swiper(el, [MouseSwiper, TouchSwiper], {
+  threshold: 10,
+  allowedTime: 300,
+});
+
+swiper.listen((event) => {
+  switch (event.type) {
+    case 'start':
+      console.log('gesture started at', event.source);
+      break;
+    case 'move':
+      console.log('moving', event.deltaX, event.deltaY);
+      break;
+    case 'end':
+      console.log('swiped', event.direction, 'at', event.velocity, 'px/ms');
+      break;
+    case 'cancel':
+      console.log('too short or too slow');
+      break;
+  }
+});
+```
+
+<Callout type="warn">
+  Call `swiper.destroy()` when the element goes away. It removes every listener
+  the detectors installed, including the ones on `window`.
+</Callout>

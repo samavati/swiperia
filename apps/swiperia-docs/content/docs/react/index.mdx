@@ -1,0 +1,58 @@
+---
+title: Introduction
+description: Swipe gestures in React with swiperia-react.
+---
+
+`swiperia-react` gives you two ways to add a swipe gesture: the
+[`SwipeArea`](/docs/react/swipe-area) component when you want an element to exist for the
+gesture, and the [`useSwiperia`](/docs/react/use-swiperia) hook when you already render the
+element yourself.
+
+```package-install
+swiperia-react
+```
+
+React 18 and 19 are both supported; React is a peer dependency, so your app's copy is used.
+
+## Usage
+
+```tsx
+import { SwipeArea } from 'swiperia-react';
+
+export function Card() {
+  return (
+    <SwipeArea
+      style={{ width: 300, height: 300 }}
+      onSwipedLeft={() => console.log('left')}
+      onSwipedRight={() => console.log('right')}
+    >
+      Swipe me
+    </SwipeArea>
+  );
+}
+```
+
+## Callbacks
+
+Both the component and the hook take the same callbacks. Each receives a
+[`SwipeEvent`](/docs/reference/swipe-event).
+
+| Callback           | Fires                                                   |
+| ------------------ | ------------------------------------------------------- |
+| `onSwipeStart`     | when a gesture begins                                   |
+| `onSwiping`        | on every move while the gesture is tracked              |
+| `onSwiped`         | when a gesture completes                                |
+| `onSwipedLeft`     | after `onSwiped`, when the direction was left           |
+| `onSwipedRight`    | after `onSwiped`, when the direction was right          |
+| `onSwipedUp`       | after `onSwiped`, when the direction was up             |
+| `onSwipedDown`     | after `onSwiped`, when the direction was down           |
+| `onSwipeCancelled` | when the gesture missed the threshold or the time limit |
+
+`onSwiped` always runs before the direction-specific callback, so you can use it for
+shared cleanup and the specific one for the action.
+
+<Callout>
+  Inline arrow functions are fine. The latest callbacks are read on each event
+  rather than captured when the listeners are attached, so a re-render does not
+  re-bind anything.
+</Callout>

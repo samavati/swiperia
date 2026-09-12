@@ -1,0 +1,68 @@
+---
+title: useSwiperia
+description: Attach swipe detection to an element you render yourself.
+---
+
+`useSwiperia` returns a `ref` to put on any element, plus the underlying `Swiper` instance.
+
+```tsx
+import { useSwiperia } from 'swiperia-react';
+
+export function Gallery() {
+  const { ref } = useSwiperia({
+    onSwipedLeft: next,
+    onSwipedRight: previous,
+  });
+
+  return <section ref={ref}>...</section>;
+}
+```
+
+## Arguments
+
+`UseSwiperiaArgs` is every [callback](/docs/react#callbacks) plus:
+
+| Option   | Type          | Description                                                                  |
+| -------- | ------------- | ---------------------------------------------------------------------------- |
+| `config` | `SwipeConfig` | `threshold` and `allowedTime`. See [configuration](/docs/web/configuration). |
+
+```tsx
+const { ref } = useSwiperia({
+  config: { threshold: 40, allowedTime: 500 },
+  onSwiped: (e) => console.log(e.direction, e.distance),
+});
+```
+
+## Return value
+
+| Property   | Type                                  | Description                                              |
+| ---------- | ------------------------------------- | -------------------------------------------------------- |
+| `ref`      | `(node: HTMLElement \| null) => void` | Callback ref to attach to your element.                  |
+| `swiperia` | `RefObject<Swiper \| null>`           | The live `Swiper`, or `null` once it has been destroyed. |
+
+The hook manages that instance for you: it is created when the ref receives an element,
+replaced if the ref moves to a different element, and destroyed on unmount.
+
+## Composing with your own ref
+
+`ref` is a callback ref, so combine it with any other ref by calling both:
+
+```tsx
+const mine = useRef<HTMLDivElement>(null);
+const { ref } = useSwiperia({ onSwiped: handle });
+
+const setRef = useCallback(
+  (node: HTMLDivElement | null) => {
+    ref(node);
+    mine.current = node;
+  },
+  [ref],
+);
+
+return <div ref={setRef} />;
+```
+
+<Callout>
+  Passing `null` to the ref does not tear the gesture down — React calls refs
+  with `null` during ordinary updates. Cleanup happens on unmount.
+</Callout>

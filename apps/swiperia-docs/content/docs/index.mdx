@@ -1,0 +1,58 @@
+---
+title: Introduction
+description: What Swiperia is, and which package you need.
+---
+
+Swiperia is a small stack of libraries for swipe gestures on the web. It turns raw
+pointer and touch events into one consistent swipe event carrying direction, distance,
+velocity and the deltas along each axis.
+
+## The packages
+
+<Cards>
+  <Card
+    title="swiperia-core"
+    href="/docs/reference/movement"
+    description="The gesture maths and the shared types. Platform-agnostic - it attaches no listeners."
+  />
+  <Card
+    title="swiperia-js"
+    href="/docs/web"
+    description="Mouse and touch detectors for the browser, composed behind a single Swiper."
+  />
+  <Card
+    title="swiperia-react"
+    href="/docs/react"
+    description="A SwipeArea component and a useSwiperia hook."
+  />
+</Cards>
+
+Each package depends on the one above it, so installing `swiperia-react` gives you all
+three. You only install `swiperia-core` directly if you want the maths without any
+event handling.
+
+## The swipe event
+
+Every detector reports the same four event types:
+
+| Type     | When it fires                                                   |
+| -------- | --------------------------------------------------------------- |
+| `start`  | the gesture begins                                              |
+| `move`   | on every movement while the gesture is tracked                  |
+| `end`    | the gesture finished and met the threshold and time constraints |
+| `cancel` | the gesture finished but was too short or too slow to count     |
+
+A `start` event carries zeroed metrics; every other type carries the full
+[`MovementEvent`](/docs/reference/movement) data.
+
+## A quick look
+
+```ts
+import { MouseSwiper, Swiper, TouchSwiper } from 'swiperia-js';
+
+const swiper = new Swiper(element, [MouseSwiper, TouchSwiper]);
+
+swiper.listen((event) => {
+  if (event.type === 'end') console.log(event.direction, event.velocity);
+});
+```

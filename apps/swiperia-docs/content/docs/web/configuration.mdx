@@ -1,0 +1,38 @@
+---
+title: Configuration
+description: Thresholds that decide whether a gesture counts as a swipe.
+---
+
+Every detector accepts an optional `SwipeConfig`.
+
+```ts
+const swiper = new Swiper(element, [MouseSwiper, TouchSwiper], {
+  threshold: 10,
+  allowedTime: 300,
+});
+```
+
+| Option        | Type     | Default | Description                                                |
+| ------------- | -------- | ------- | ---------------------------------------------------------- |
+| `threshold`   | `number` | `10`    | Minimum distance in pixels for the gesture to count.       |
+| `allowedTime` | `number` | `300`   | Maximum duration in milliseconds for the gesture to count. |
+
+## How the constraint is applied
+
+When the gesture finishes, the detector compares it against both values:
+
+```ts
+const passed = duration <= allowedTime && distance >= threshold;
+```
+
+Passing emits an `end` event; failing emits a `cancel` event. Both carry the same
+movement data, so `cancel` is still useful — it tells you the user tried.
+
+<Callout type="info">
+  `distance` is the straight-line distance between the start and end points, not
+  the length of the path travelled. A long looping gesture that returns near its
+  origin fails the threshold.
+</Callout>
+
+Raise `threshold` when an element also handles clicks, so small imprecise presses are not
+read as swipes. Raise `allowedTime` if you want slow, deliberate drags to count.

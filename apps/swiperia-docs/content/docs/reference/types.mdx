@@ -1,0 +1,64 @@
+---
+title: Types
+description: Vector2, SwipeDirection, SwipeConfig and SwipeCallback.
+---
+
+Every type is exported from `swiperia-core` and re-exported where it is used, so you can
+import it from whichever package you already depend on.
+
+## Vector2
+
+A point or a per-axis pair, as a tuple.
+
+```ts
+type Vector2 = [number, number];
+```
+
+Used for coordinates (`source`, `target`) and for per-axis velocity (`vxvy`).
+
+## SwipeDirection
+
+```ts
+type SwipeDirection = 'right' | 'left' | 'up' | 'down';
+```
+
+Where a gesture is reported as `null` rather than a direction, the two points were
+identical.
+
+## SwipeConfig
+
+```ts
+type SwipeConfig = {
+  threshold?: number; // default 10 (px)
+  allowedTime?: number; // default 300 (ms)
+};
+```
+
+See [configuration](/docs/web/configuration) for how the two are applied.
+
+## SwipeCallback
+
+```ts
+type SwipeCallback = (event: SwipeEvent) => void;
+```
+
+The function passed to `listen()`, and the type behind every React callback prop.
+
+```ts
+import type { SwipeCallback } from 'swiperia-core';
+
+const handle: SwipeCallback = (event) => {
+  if (event.type === 'end') console.log(event.direction);
+};
+```
+
+## React types
+
+`swiperia-react` adds two interfaces for grouping callbacks:
+
+| Type                         | Description                                                        |
+| ---------------------------- | ------------------------------------------------------------------ |
+| `SwiperiaDirectionCallbacks` | The four direction callbacks only.                                 |
+| `SwiperiaCallbacks`          | The direction callbacks plus start, swiping, swiped and cancelled. |
+| `SwipeAreaProps`             | `SwiperiaCallbacks` plus the props of a `div`.                     |
+| `UseSwiperiaArgs`            | `SwiperiaCallbacks` plus `config`.                                 |

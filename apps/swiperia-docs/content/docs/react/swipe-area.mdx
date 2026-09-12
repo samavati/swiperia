@@ -1,0 +1,57 @@
+---
+title: SwipeArea
+description: A div that reports swipes.
+---
+
+`SwipeArea` renders a `div` and reports gestures on it. Every prop it does not consume —
+`className`, `style`, `id`, data attributes, ARIA attributes — is forwarded to that `div`,
+and so is the `ref`.
+
+```tsx
+import { SwipeArea } from 'swiperia-react';
+
+<SwipeArea
+  className="card"
+  onSwiping={(e) => setOffset(e.deltaX)}
+  onSwiped={() => setOffset(0)}
+  onSwipedLeft={dismiss}
+>
+  <Content />
+</SwipeArea>;
+```
+
+## Props
+
+`SwipeAreaProps` is every [callback](/docs/react#callbacks) plus the props of a `div`.
+
+| Prop       | Type                              | Description                        |
+| ---------- | --------------------------------- | ---------------------------------- |
+| `children` | `ReactNode`                       | Rendered inside the element.       |
+| `ref`      | `Ref<HTMLDivElement>`             | Forwarded to the underlying `div`. |
+| `...rest`  | `ComponentPropsWithoutRef<'div'>` | Forwarded to the underlying `div`. |
+
+## Refs
+
+The component needs the element internally, but still gives you yours — both callback refs
+and ref objects work:
+
+```tsx
+const ref = useRef<HTMLDivElement>(null);
+
+<SwipeArea ref={ref} />;
+```
+
+## Sizing
+
+`SwipeArea` has no styles of its own. An empty one is zero pixels tall and cannot be
+swiped, so give it content or a size.
+
+```tsx
+<SwipeArea style={{ width: '100%', height: 320 }} />
+```
+
+<Callout type="warn">
+  Thresholds are not configurable through `SwipeArea`. Use
+  [`useSwiperia`](/docs/react/use-swiperia) with its `config` option when you
+  need to change `threshold` or `allowedTime`.
+</Callout>
