@@ -43,9 +43,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      # Authenticates to npm through OIDC trusted publishing: the `id-token`
+      # permission above lets pnpm exchange a short-lived GitHub token for a
+      # publish grant, so there is no npm token to store or rotate. Each package
+      # trusts samavati/swiperia + this workflow filename, so renaming this file
+      # breaks publishing until the trusted publishers are updated.
       - name: Release
         run: pnpm nx release ${{ inputs.dryRun && '--dry-run' || '--yes' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
