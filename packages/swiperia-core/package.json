@@ -1,6 +1,6 @@
 {
   "name": "swiperia-core",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Platform-agnostic engine for swipe gestures: direction, distance, velocity and movement analysis.",
   "keywords": [
     "swipe",

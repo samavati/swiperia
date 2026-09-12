@@ -1,6 +1,6 @@
 {
   "name": "swiperia-js",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Swipe gesture detection for the web: mouse and touch swipers built on swiperia-core.",
   "keywords": [
     "swipe",
@@ -56,7 +56,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "swiperia-core": "workspace:*",
+    "swiperia-core": "1.1.2",
     "tslib": "^2.3.0"
   },
   "nx": {

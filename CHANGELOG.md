@@ -1,3 +1,16 @@
+## 1.1.2 (2026-09-12)
+
+### 🩹 Fixes
+
+- **swiperia-js:** honor destroy() called from the start callback ([a7c7067](https://github.com/samavati/swiperia/commit/a7c7067))
+- **swiperia-js:** clear the detector list when a Swiper is destroyed ([87649cb](https://github.com/samavati/swiperia/commit/87649cb))
+- **swiperia-react:** keep swipe listeners attached across re-renders ([4fc1e51](https://github.com/samavati/swiperia/commit/4fc1e51))
+- **swiperia-react:** correct SwipeArea props and add a display name ([21a78e4](https://github.com/samavati/swiperia/commit/21a78e4))
+
+### ❤️ Thank You
+
+- Ehsan Samavati
+
 ## 1.1.1 (2025-04-21)
 
 ### 🩹 Fixes
