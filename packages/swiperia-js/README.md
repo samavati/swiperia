@@ -1,59 +1,82 @@
-# Swiperia JS
+# swiperia-js
 
-Swiperia JS is a powerful and flexible library for adding swipe gesture support to your web applications. Built on top of the `swiperia-core` package, it provides a set of classes and utilities that make it easy to detect and handle swipe gestures on various input devices, such as mouse and touch.
-
-## Features
-
-- **Mouse Swipe Detection**: Detect and handle swipe gestures initiated by mouse input.
-- **Touch Swipe Detection**: Detect and handle swipe gestures initiated by touch input (e.g., on mobile devices and touchscreens).
-- **Unified Swipe Event Handling**: Receive consistent swipe events (`start`, `move`, `end`, `cancel`) regardless of the input device.
-- **Customizable Swipe Configuration**: Customize the swipe behavior by providing configuration options, such as thresholds and constraints.
-- **Extensible Architecture**: Easily extend or create custom swipe detectors by inheriting from the `AbstractSwiper` class.
+Swipe gesture detection for the web, built on [`swiperia-core`](https://www.npmjs.com/package/swiperia-core).
+Attach one `Swiper` to an element and receive the same event shape for mouse and touch input.
 
 ## Installation
 
-You can install the `swiperia-js` package using npm or yarn:
-
 ```bash
 npm install swiperia-js
-# or
-yarn add swiperia-js
 ```
 
+> Ships both ESM and CommonJS with matching type declarations - `import` and `require` both work.
 
 ## Usage
-Here's a basic example of how to use the swiperia-js package:
 
 ```ts
-import { Swiper, MouseSwiper, TouchSwiper } from 'swiperia-js';
+import { MouseSwiper, Swiper, TouchSwiper } from 'swiperia-js';
 
-const targetElement = document.getElementById('swipeable');
-
-const swiper = new Swiper(targetElement, [MouseSwiper, TouchSwiper]);
+const el = document.getElementById('swipeable')!;
+const swiper = new Swiper(el, [MouseSwiper, TouchSwiper], {
+  threshold: 10, // min distance in px to count as a swipe
+  allowedTime: 300, // max duration in ms
+});
 
 swiper.listen((event) => {
   switch (event.type) {
     case 'start':
-      console.log('Swipe started');
+      console.log('swipe started');
       break;
     case 'move':
-      console.log('Swiping...', event.deltaX, event.deltaY);
+      console.log('swiping', event.deltaX, event.deltaY);
       break;
     case 'end':
-      console.log('Swipe ended', event.direction);
+      console.log('swiped', event.direction);
       break;
     case 'cancel':
-      console.log('Swipe canceled');
+      console.log('below threshold or too slow');
       break;
   }
 });
+
+// Always clean up - this removes every listener the detectors installed.
+swiper.destroy();
 ```
 
-## Documentation
-For detailed documentation, including API references, advanced usage examples, and guides on creating custom swipe detectors, please visit the [Swiperia Documentation](https://samavati.github.io/swiperia/).
+## API
 
-## Contributing
-We welcome contributions from the community! If you'd like to contribute to Swiperia JS, please read our Contributing Guide for more information.
+| Export           | Description                                                                        |
+| ---------------- | ---------------------------------------------------------------------------------- |
+| `Swiper`         | Composes detectors over one element. `listen(cb)` attaches, `destroy()` detaches.  |
+| `MouseSwiper`    | Detector for `mousedown` / `mousemove` / `mouseup`.                                |
+| `TouchSwiper`    | Detector for `touchstart` / `touchmove` / `touchend`.                              |
+| `AbstractSwiper` | Base class for custom detectors — implement `point()`, `listen()` and `destroy()`. |
+
+A swipe emits `end` when it travels at least `threshold` pixels within `allowedTime`
+milliseconds, and `cancel` otherwise. Both carry the full movement data.
+
+### Custom detectors
+
+```ts
+import { AbstractSwiper } from 'swiperia-js';
+import type { SwipeCallback, Vector2 } from 'swiperia-core';
+
+class PointerSwiper extends AbstractSwiper {
+  point(e: PointerEvent): Vector2 {
+    return [e.pageX, e.pageY];
+  }
+
+  listen(callback: SwipeCallback) {
+    this._callback = callback;
+    this.el.addEventListener('pointerdown', this._start, false);
+  }
+
+  destroy() {
+    this.el.removeEventListener('pointerdown', this._start, false);
+  }
+}
+```
 
 ## License
-Swiperia JS is released under the MIT License.
+
+MIT © Ehsan Samavati
