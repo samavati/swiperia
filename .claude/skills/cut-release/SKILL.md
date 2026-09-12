@@ -23,14 +23,22 @@ Confirm the last release is tagged:
 git tag --list | tail -3
 ```
 
-`nx release` builds the changelog from commits since the most recent tag. A missing tag for the last published version silently widens the range and duplicates entries already in `CHANGELOG.md` — backfill it (`git tag vX.Y.Z <commit> && git push origin vX.Y.Z`) before continuing.
+`nx release` builds the changelog from commits since the most recent tag. A missing tag for the last published version silently widens the range and duplicates entries already in `CHANGELOG.md` — backfill it before continuing:
+
+```
+git tag vX.Y.Z <commit> && git push origin vX.Y.Z
+```
+
+Any `v*` tag push triggers the publish workflow, so first confirm the target commit predates `release.yml` (`git show <commit>:.github/workflows/release.yml`). If the file exists there, backfilling would publish whatever versions that commit's `package.json`s carry — create the tag locally without pushing instead, since only the changelog range needs it.
 
 ## 2. Version
 
 ```
 git checkout -b release/next
-pnpm nx release --skip-publish --git-push=false --git-tag=false -d
+pnpm nx release --skip-publish -d
 ```
+
+`nx.json` already pins `release.git` to commit but not tag or push, so no flags are needed — `--git-tag` and `--git-push` belong to the `nx release version` subcommand and are rejected here.
 
 `-d` previews. Read the output before dropping it:
 
@@ -40,7 +48,7 @@ pnpm nx release --skip-publish --git-push=false --git-tag=false -d
 Override the computed bump with a specifier when the commit types understate the change — a reshaped `exports` map, a dropped entry point, or a raised Node floor breaks consumers even if every commit said `fix:`:
 
 ```
-pnpm nx release major --skip-publish --git-push=false --git-tag=false
+pnpm nx release major --skip-publish
 ```
 
 Rerun without `-d` once the numbers look right. This bumps the three `package.json`s, writes `CHANGELOG.md`, and commits locally.

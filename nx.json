@@ -61,10 +61,13 @@
       "preserveLocalDependencyProtocols": false
     },
     "changelog": {
-      "workspaceChangelog": {
-        "createRelease": "github"
-      },
+      "workspaceChangelog": true,
       "projectChangelogs": false
+    },
+    "git": {
+      "commit": true,
+      "tag": false,
+      "push": false
     },
     "releaseTag": {
       "pattern": "v{version}"
