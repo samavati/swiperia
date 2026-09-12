@@ -10,7 +10,7 @@ on:
       - 'v*'
 
 permissions:
-  contents: read # publishing touches nothing in the repo
+  contents: write # create the GitHub Release; no branch is ever pushed
   id-token: write # npm OIDC trusted publishing
 
 jobs:
@@ -46,3 +46,11 @@ jobs:
         run: pnpm nx release publish --yes
         env:
           NPM_CONFIG_PROVENANCE: true
+
+      # The tag only exists once the version PR is merged, so the release is
+      # cut here rather than by nx during local versioning. Creating a release
+      # is not a branch push, so it needs no ruleset bypass.
+      - name: GitHub Release
+        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
