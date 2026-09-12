@@ -1,29 +1,84 @@
 {
   "name": "swiperia-core",
-  "version": "1.0.2",
-  "type": "module",
-  "description": "Swiperia Core: The foundational engine for handling swipe gestures in JavaScript. Provides platform-agnostic utilities to detect swipe direction, calculate distance and velocity, and analyze swipe movement data.",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/samavati/swiperia.git"
-  },
-  "bugs": {
-    "url": "https://github.com/samavati/swiperia/issues"
-  },
-  "homepage": "https://github.com/samavati/swiperia#readme",
+  "version": "1.1.1",
+  "description": "Platform-agnostic engine for swipe gestures: direction, distance, velocity and movement analysis.",
   "keywords": [
     "swipe",
     "gesture",
     "touch",
     "mobile",
-    "react",
     "javascript",
+    "typescript",
     "ui",
     "interaction"
   ],
-  "dependencies": {},
-  "main": "./index.umd.js",
-  "module": "./index.mjs",
-  "typings": "./index.d.ts"
+  "homepage": "https://github.com/samavati/swiperia#readme",
+  "bugs": {
+    "url": "https://github.com/samavati/swiperia/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samavati/swiperia.git",
+    "directory": "packages/swiperia-core"
+  },
+  "license": "MIT",
+  "author": "Ehsan Samavati",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "swiperia-source": "./src/index.ts",
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo",
+    "!**/*.d.ts.map"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "nx": {
+    "tags": [
+      "scope:core"
+    ],
+    "targets": {
+      "build": {
+        "command": "tsc --build tsconfig.lib.json && tsup",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [
+          "production",
+          "^production"
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ]
+      }
+    }
+  }
 }

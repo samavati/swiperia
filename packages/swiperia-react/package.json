@@ -1,39 +1,97 @@
 {
   "name": "swiperia-react",
   "version": "1.1.1",
-  "type": "module",
-  "description": "Swiperia React: A powerful suite of JavaScript libraries for building intuitive swipe-driven user interfaces. Provides core gesture handling, web-specific implementations, and React components for seamless integration.",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/samavati/swiperia.git"
-  },
-  "bugs": {
-    "url": "https://github.com/samavati/swiperia/issues"
-  },
-  "homepage": "https://github.com/samavati/swiperia#readme",
+  "description": "React bindings for Swiperia: a SwipeArea component and a useSwiperia hook for swipe gestures.",
   "keywords": [
     "swipe",
     "gesture",
     "touch",
     "mobile",
     "react",
-    "javascript",
+    "react-hook",
+    "typescript",
     "ui",
     "interaction"
   ],
-  "dependencies": {
-    "swiperia-core": "1.0.2",
-    "swiperia-js": "1.0.2"
+  "homepage": "https://github.com/samavati/swiperia#readme",
+  "bugs": {
+    "url": "https://github.com/samavati/swiperia/issues"
   },
-  "main": "./index.umd.cjs",
-  "module": "./index.js",
-  "typings": "./index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samavati/swiperia.git",
+    "directory": "packages/swiperia-react"
+  },
+  "license": "MIT",
+  "author": "Ehsan Samavati",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
-      "import": "./index.js",
-      "require": "./index.umd.cjs",
-      "types": "./index.d.ts"
+      "swiperia-source": "./src/index.ts",
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo",
+    "!**/*.d.ts.map"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "swiperia-core": "workspace:*",
+    "swiperia-js": "workspace:*",
+    "tslib": "^2.3.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.0",
+    "@types/react": "^19.2.2",
+    "jsdom": "^27.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "nx": {
+    "tags": [
+      "scope:react"
+    ],
+    "targets": {
+      "build": {
+        "command": "tsc --build tsconfig.lib.json && tsup",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [
+          "production",
+          "^production"
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ]
+      }
     }
   }
 }

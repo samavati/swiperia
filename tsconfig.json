@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/swiperia-core"
+    },
+    {
+      "path": "./packages/swiperia-js"
+    },
+    {
+      "path": "./packages/swiperia-react"
+    }
+  ],
+  "compilerOptions": {}
+}
