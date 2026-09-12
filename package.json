@@ -6,6 +6,7 @@
     "verify-packaging": "pnpm --filter './packages/*' exec publint && pnpm --filter './packages/*' exec attw --pack ."
   },
   "private": true,
+  "packageManager": "pnpm@11.18.0",
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
     "@eslint/js": "^10.0.1",
