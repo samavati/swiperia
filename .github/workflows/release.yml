@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        description: 'Preview the release without publishing'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write # push the version commit, tag and GitHub release
+  id-token: write # npm provenance
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # nx release reads the tag history
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm nx run-many -t lint test build typecheck
+
+      # Fails the release if a tarball would be unusable for any consumer:
+      # publint checks the package shape, attw checks that types resolve under
+      # node10 / node16-CJS / node16-ESM / bundler.
+      - name: Verify package shape
+        run: pnpm verify-packaging
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Release
+        run: pnpm nx release ${{ inputs.dryRun && '--dry-run' || '--yes' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
