@@ -1,45 +1,42 @@
 {
-  "pluginsConfig": {
-    "@nx/js": {
-      "analyzeSourceFiles": true
-    }
-  },
-  "extends": "nx/presets/npm.json",
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "targetDefaults": {
-    "@nx/vite:build": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["default", "^default"]
-    },
-    "@nx/rollup:rollup": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["default", "^default"]
-    },
-    "e2e-ci--**/*": {
-      "dependsOn": ["^build"]
-    }
-  },
-  "release": {
-    "version": {
-      "preVersionCommand": "npx nx run-many -t build",
-      "conventionalCommits": true
-    },
-    "changelog": {
-      "workspaceChangelog": true,
-      "automaticFromRef": true
-    }
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/src/testing/**/*",
+      "!{projectRoot}/src/test-setup.[jt]s"
+    ],
+    "sharedGlobals": []
   },
   "plugins": [
+    {
+      "plugin": "@nx/js/typescript",
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        },
+        "build": {
+          "targetName": "build",
+          "configName": "tsconfig.lib.json",
+          "buildDepsName": "build-deps",
+          "watchDepsName": "watch-deps"
+        }
+      }
+    },
     {
       "plugin": "@nx/vite/plugin",
       "options": {
         "buildTargetName": "build",
-        "previewTargetName": "preview",
-        "testTargetName": "test",
         "serveTargetName": "serve",
-        "serveStaticTargetName": "serve-static"
+        "devTargetName": "dev",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
       }
     },
     {
@@ -49,52 +46,35 @@
       }
     },
     {
-      "plugin": "@nx/playwright/plugin",
+      "plugin": "@nx/vitest",
       "options": {
-        "targetName": "e2e"
-      }
-    },
-    {
-      "plugin": "@nx/next/plugin",
-      "options": {
-        "buildTargetName": "build",
-        "devTargetName": "dev",
-        "startTargetName": "start",
-        "serveStaticTargetName": "serve-static"
+        "testTargetName": "test"
       }
     }
   ],
-  "generators": {
-    "@nx/web:application": {
-      "style": "scss",
-      "linter": "eslint",
-      "unitTestRunner": "vitest",
-      "e2eTestRunner": "playwright"
+  "release": {
+    "projects": ["packages/*"],
+    "projectsRelationship": "fixed",
+    "version": {
+      "preVersionCommand": "pnpm nx run-many -t build --projects=packages/*",
+      "conventionalCommits": true,
+      "preserveLocalDependencyProtocols": false
     },
-    "@nx/react": {
-      "application": {
-        "babel": true,
-        "style": "scss",
-        "linter": "eslint",
-        "bundler": "vite"
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": "github"
       },
-      "component": {
-        "style": "scss"
-      },
-      "library": {
-        "style": "scss",
-        "linter": "eslint",
-        "unitTestRunner": "vitest"
-      }
+      "projectChangelogs": false
     },
-    "@nx/next": {
-      "application": {
-        "style": "tailwind",
-        "linter": "eslint"
-      }
+    "releaseTag": {
+      "pattern": "v{version}"
     }
   },
-  "analytics": false,
+  "targetDefaults": {
+    "test": {
+      "dependsOn": ["^build"]
+    }
+  },
   "neverConnectToCloud": true,
-  "useLegacyCache": true
+  "analytics": false
 }
