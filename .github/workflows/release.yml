@@ -16,9 +16,20 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      # The branch ruleset on main requires pull requests and signed commits,
+      # which the version commit nx release pushes is neither. Rather than
+      # exempting every write collaborator, the bypass list names this app
+      # alone, and its installation token lasts only for this job.
+      - uses: actions/create-github-app-token@v3
+        id: app-token
+        with:
+          app-id: ${{ vars.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0 # nx release reads the tag history
+          token: ${{ steps.app-token.outputs.token }}
 
       - uses: pnpm/action-setup@v6
 
@@ -40,8 +51,10 @@ jobs:
 
       - name: Configure git
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "${APP_SLUG}[bot]"
+          git config user.email "${APP_SLUG}[bot]@users.noreply.github.com"
+        env:
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
 
       # Authenticates to npm through OIDC trusted publishing: the `id-token`
       # permission above lets pnpm exchange a short-lived GitHub token for a
@@ -51,5 +64,5 @@ jobs:
       - name: Release
         run: pnpm nx release ${{ inputs.dryRun && '--dry-run' || '--yes' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           NPM_CONFIG_PROVENANCE: true
