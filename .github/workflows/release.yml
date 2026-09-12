@@ -1,35 +1,23 @@
 name: Release
 
+# Versioning happens locally and lands on main through a normal pull request;
+# pushing the tag is what publishes. Tags are outside the branch ruleset, so
+# this workflow never needs write access to a branch and no rule has to be
+# bypassed for it.
 on:
-  workflow_dispatch:
-    inputs:
-      dryRun:
-        description: 'Preview the release without publishing'
-        type: boolean
-        default: true
+  push:
+    tags:
+      - 'v*'
 
 permissions:
-  contents: write # push the version commit, tag and GitHub release
-  id-token: write # npm provenance
+  contents: read # publishing touches nothing in the repo
+  id-token: write # npm OIDC trusted publishing
 
 jobs:
-  release:
+  publish:
     runs-on: ubuntu-latest
     steps:
-      # The branch ruleset on main requires pull requests and signed commits,
-      # which the version commit nx release pushes is neither. Rather than
-      # exempting every write collaborator, the bypass list names this app
-      # alone, and its installation token lasts only for this job.
-      - uses: actions/create-github-app-token@v3
-        id: app-token
-        with:
-          app-id: ${{ vars.RELEASE_APP_ID }}
-          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
-
       - uses: actions/checkout@v5
-        with:
-          fetch-depth: 0 # nx release reads the tag history
-          token: ${{ steps.app-token.outputs.token }}
 
       - uses: pnpm/action-setup@v6
 
@@ -49,20 +37,12 @@ jobs:
       - name: Verify package shape
         run: pnpm verify-packaging
 
-      - name: Configure git
-        run: |
-          git config user.name "${APP_SLUG}[bot]"
-          git config user.email "${APP_SLUG}[bot]@users.noreply.github.com"
+      # Authenticates through OIDC trusted publishing: the `id-token` permission
+      # above lets pnpm exchange a short-lived GitHub token for a publish grant,
+      # so there is no npm token to store or rotate. Each package trusts
+      # samavati/swiperia + this workflow filename, so renaming this file breaks
+      # publishing until the trusted publishers are updated.
+      - name: Publish
+        run: pnpm nx release publish --yes
         env:
-          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
-
-      # Authenticates to npm through OIDC trusted publishing: the `id-token`
-      # permission above lets pnpm exchange a short-lived GitHub token for a
-      # publish grant, so there is no npm token to store or rotate. Each package
-      # trusts samavati/swiperia + this workflow filename, so renaming this file
-      # breaks publishing until the trusted publishers are updated.
-      - name: Release
-        run: pnpm nx release ${{ inputs.dryRun && '--dry-run' || '--yes' }}
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           NPM_CONFIG_PROVENANCE: true
