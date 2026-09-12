@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { type SwipeEvent, type SwipeConfig } from 'swiperia-core';
+import type { SwipeEvent, SwipeConfig } from 'swiperia-core';
 import { MouseSwiper, Swiper, TouchSwiper } from 'swiperia-js';
-import { type SwiperiaCallbacks } from '../types';
+import type { SwiperiaCallbacks } from '../types.js';
 
 export interface UseSwiperiaArgs extends SwiperiaCallbacks {
   config?: SwipeConfig;
@@ -11,6 +11,11 @@ export const useSwiperia = (args?: UseSwiperiaArgs) => {
   const el = useRef<HTMLElement | null>(null);
   const swiperia = useRef<Swiper | null>(null);
 
+  // Keep the latest callbacks in a ref so that re-rendering with new inline
+  // handlers does not tear down and re-attach the DOM listeners.
+  const latest = useRef(args);
+  latest.current = args;
+
   const destroy = useCallback(() => {
     if (swiperia.current) {
       swiperia.current.destroy();
@@ -19,71 +24,61 @@ export const useSwiperia = (args?: UseSwiperiaArgs) => {
   }, []);
 
   const listen = useCallback(() => {
-    if (el.current) {
-      swiperia.current = new Swiper(
-        el.current,
-        [MouseSwiper, TouchSwiper],
-        args?.config
-      );
-      swiperia.current?.listen((e: SwipeEvent) => {
-        switch (e.type) {
-          case 'end':
-            args?.onSwiped?.(e);
-            switch (e.direction) {
-              case 'down':
-                args?.onSwipedDown?.(e);
-                break;
-              case 'left':
-                args?.onSwipedLeft?.(e);
-                break;
-              case 'right':
-                args?.onSwipedRight?.(e);
-                break;
-              case 'up':
-                args?.onSwipedUp?.(e);
-                break;
-            }
-            break;
-          case 'start':
-            args?.onSwipeStart?.(e);
-            break;
-          case 'move':
-            args?.onSwiping?.(e);
-            break;
-          case 'cancel':
-            args?.onSwipeCancelled?.(e);
-            break;
-        }
-      });
-    }
-  }, [
-    args?.config,
-    args?.onSwiped,
-    args?.onSwipedDown,
-    args?.onSwipedLeft,
-    args?.onSwipedRight,
-    args?.onSwipedUp,
-    args?.onSwipeStart,
-    args?.onSwiping,
-    args?.onSwipeCancelled,
-  ]);
+    if (!el.current) return;
+    // Idempotent: never leave a previous Swiper attached to the element.
+    destroy();
+    const swiper = new Swiper(
+      el.current,
+      [MouseSwiper, TouchSwiper],
+      latest.current?.config,
+    );
+    swiperia.current = swiper;
+    swiper.listen((e: SwipeEvent) => {
+      const handlers = latest.current;
+      switch (e.type) {
+        case 'end':
+          handlers?.onSwiped?.(e);
+          switch (e.direction) {
+            case 'down':
+              handlers?.onSwipedDown?.(e);
+              break;
+            case 'left':
+              handlers?.onSwipedLeft?.(e);
+              break;
+            case 'right':
+              handlers?.onSwipedRight?.(e);
+              break;
+            case 'up':
+              handlers?.onSwipedUp?.(e);
+              break;
+          }
+          break;
+        case 'start':
+          handlers?.onSwipeStart?.(e);
+          break;
+        case 'move':
+          handlers?.onSwiping?.(e);
+          break;
+        case 'cancel':
+          handlers?.onSwipeCancelled?.(e);
+          break;
+      }
+    });
+  }, [destroy]);
 
   const ref = useCallback(
     (node: HTMLElement | null) => {
-      if (node && !node.isEqualNode(el.current)) {
+      if (node && node !== el.current) {
         el.current = node;
-        destroy();
         listen();
       }
     },
-    [destroy, listen]
+    [listen],
   );
 
   useEffect(() => {
     listen();
-    return () => {
-      destroy();
-    };
+    return destroy;
   }, [listen, destroy]);
 
   return { ref, swiperia };
