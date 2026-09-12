@@ -1,5 +1,5 @@
 import type { SwipeCallback, SwipeConfig } from 'swiperia-core';
-import { AbstractSwiper } from '../AbstractSwiper/AbstractSwiper';
+import { AbstractSwiper } from '../AbstractSwiper/AbstractSwiper.js';
 
 export class Swiper {
   private _detectors: AbstractSwiper[] = [];
@@ -7,13 +7,13 @@ export class Swiper {
     public el: HTMLElement,
     public detectors: (new (
       el: HTMLElement,
-      config?: SwipeConfig
+      config?: SwipeConfig,
     ) => AbstractSwiper)[],
-    public config?: SwipeConfig
+    public config?: SwipeConfig,
   ) {}
 
   listen(callback: SwipeCallback) {
-    for (let Detector of this.detectors) {
+    for (const Detector of this.detectors) {
       const instance = new Detector(this.el, this.config);
       this._detectors.push(instance);
       instance.listen(callback);
@@ -21,8 +21,9 @@ export class Swiper {
   }
 
   destroy() {
-    for (let detector of this._detectors) {
+    for (const detector of this._detectors) {
       detector.destroy();
     }
+    this._detectors = [];
   }
 }

@@ -1,31 +1,86 @@
 {
   "name": "swiperia-js",
-  "version": "1.0.2",
-  "type": "module",
-  "description": "Swiperia JS: A powerful suite of JavaScript libraries for building intuitive swipe-driven user interfaces. Provides core gesture handling, web-specific implementations, and React components for seamless integration.",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/samavati/swiperia.git"
-  },
-  "bugs": {
-    "url": "https://github.com/samavati/swiperia/issues"
-  },
-  "homepage": "https://github.com/samavati/swiperia#readme",
+  "version": "1.1.1",
+  "description": "Swipe gesture detection for the web: mouse and touch swipers built on swiperia-core.",
   "keywords": [
     "swipe",
     "gesture",
     "touch",
+    "mouse",
     "mobile",
-    "react",
     "javascript",
+    "typescript",
     "ui",
     "interaction"
   ],
-  "dependencies": {
-    "swiperia-core": "1.0.1"
+  "homepage": "https://github.com/samavati/swiperia#readme",
+  "bugs": {
+    "url": "https://github.com/samavati/swiperia/issues"
   },
-  "main": "./index.umd.js",
-  "module": "./index.mjs",
-  "typings": "./index.d.ts"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samavati/swiperia.git",
+    "directory": "packages/swiperia-js"
+  },
+  "license": "MIT",
+  "author": "Ehsan Samavati",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "swiperia-source": "./src/index.ts",
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "!**/*.tsbuildinfo",
+    "!**/*.d.ts.map"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "swiperia-core": "workspace:*",
+    "tslib": "^2.3.0"
+  },
+  "nx": {
+    "tags": [
+      "scope:js"
+    ],
+    "targets": {
+      "build": {
+        "command": "tsc --build tsconfig.lib.json && tsup",
+        "options": {
+          "cwd": "{projectRoot}"
+        },
+        "cache": true,
+        "dependsOn": [
+          "^build"
+        ],
+        "inputs": [
+          "production",
+          "^production"
+        ],
+        "outputs": [
+          "{projectRoot}/dist"
+        ]
+      }
+    }
+  }
 }

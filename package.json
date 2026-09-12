@@ -1,88 +1,56 @@
 {
   "name": "swiperia",
   "version": "0.0.0",
-  "description": "A collection of JavaScript libraries for seamless swipe gesture integration. Includes platform-agnostic core utilities, web-specific implementations, and React components, empowering developers to enhance user experiences with intuitive swipe interactions.",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/samavati/swiperia.git"
+  "scripts": {
+    "verify-packaging": "pnpm --filter './packages/*' exec publint && pnpm --filter './packages/*' exec attw --pack ."
   },
-  "bugs": {
-    "url": "https://github.com/samavati/swiperia/issues"
-  },
-  "homepage": "https://github.com/samavati/swiperia#readme",
-  "keywords": [
-    "swipe",
-    "gesture",
-    "touch",
-    "mobile",
-    "react",
-    "javascript",
-    "ui",
-    "interaction"
-  ],
-  "scripts": {},
   "private": true,
-  "dependencies": {
-    "next": "14.0.4",
-    "nextra": "2.13.4",
-    "nextra-theme-docs": "2.13.4",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-router-dom": "6.11.2",
-    "tslib": "2.3.0"
-  },
+  "packageManager": "pnpm@11.18.0",
   "devDependencies": {
-    "@babel/core": "7.14.5",
-    "@babel/preset-react": "7.14.5",
-    "@nx/devkit": "18.3.5",
-    "@nx/eslint": "18.3.5",
-    "@nx/eslint-plugin": "18.3.5",
-    "@nx/js": "18.3.5",
-    "@nx/next": "18.3.5",
-    "@nx/playwright": "18.3.5",
-    "@nx/react": "18.3.5",
-    "@nx/rollup": "18.3.5",
-    "@nx/vite": "18.3.5",
-    "@nx/web": "18.3.5",
-    "@playwright/test": "1.36.0",
-    "@swc-node/register": "~1.8.0",
-    "@swc/cli": "~0.1.62",
-    "@swc/core": "~1.3.85",
-    "@swc/helpers": "~0.5.2",
-    "@testing-library/react": "15.0.4",
-    "@types/node": "18.16.9",
-    "@types/react": "18.2.33",
-    "@types/react-dom": "18.2.14",
-    "@typescript-eslint/eslint-plugin": "7.3.0",
-    "@typescript-eslint/parser": "7.3.0",
-    "@vitejs/plugin-react": "4.2.0",
-    "@vitest/coverage-v8": "1.0.4",
-    "@vitest/ui": "1.5.1",
-    "autoprefixer": "10.4.13",
-    "eslint": "~8.57.0",
-    "eslint-config-next": "14.0.4",
-    "eslint-config-prettier": "9.0.0",
-    "eslint-plugin-import": "2.27.5",
-    "eslint-plugin-jsx-a11y": "6.7.1",
-    "eslint-plugin-playwright": "0.15.3",
-    "eslint-plugin-react": "7.32.2",
-    "eslint-plugin-react-hooks": "4.6.0",
-    "jsdom": "~22.1.0",
-    "nx": "18.3.5",
-    "postcss": "8.4.21",
-    "prettier": "2.6.2",
-    "sass": "1.75.0",
-    "swc-loader": "0.1.15",
-    "tailwindcss": "3.2.7",
-    "typescript": "~5.4.2",
-    "verdaccio": "5.0.4",
-    "vite": "~5.0.0",
-    "vite-plugin-dts": "~3.8.1",
-    "vite-plugin-static-copy": "^1.0.6",
-    "vitest": "1.5.1"
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@eslint/js": "^10.0.1",
+    "@nx/eslint": "23.2.0",
+    "@nx/eslint-plugin": "23.2.0",
+    "@nx/js": "23.2.0",
+    "@nx/vite": "23.2.0",
+    "@nx/vitest": "23.2.0",
+    "@nx/web": "23.2.0",
+    "@swc/helpers": "~0.5.18",
+    "@types/node": "24.13.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitest/coverage-v8": "~4.1.10",
+    "@vitest/ui": "~4.1.10",
+    "eslint": "~10.6.0",
+    "jiti": "2.4.2",
+    "jsdom": "^27.1.0",
+    "jsonc-eslint-parser": "^2.1.0",
+    "nx": "23.2.0",
+    "prettier": "^3.8.1",
+    "publint": "^0.3.24",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tslib": "^2.3.0",
+    "tsup": "^8.5.1",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.63.0",
+    "verdaccio": "6.4.0",
+    "vite": "^8.1.4",
+    "vitest": "~4.1.10"
   },
   "nx": {
-    "includedScripts": []
-  }
+    "includedScripts": [],
+    "targets": {
+      "local-registry": {
+        "executor": "@nx/js:verdaccio",
+        "options": {
+          "port": 4873,
+          "config": ".verdaccio/config.yml",
+          "storage": "tmp/local-registry/storage"
+        }
+      }
+    }
+  },
+  "description": "Monorepo for the Swiperia swipe gesture libraries."
 }

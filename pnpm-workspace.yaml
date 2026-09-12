@@ -1,0 +1,12 @@
+packages:
+  - 'packages/*'
+  - 'apps/*'
+
+# nx release rewrites `workspace:*` to the concrete version before it updates the
+# lock file; without this pnpm would look that unpublished version up on the registry.
+linkWorkspacePackages: true
+
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true
+  nx: true

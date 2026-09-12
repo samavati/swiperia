@@ -1,16 +1,28 @@
 import {
   forwardRef,
   useCallback,
-  type ComponentPropsWithRef,
+  type ComponentPropsWithoutRef,
   type PropsWithChildren,
+  type Ref,
 } from 'react';
-import type { SwiperiaCallbacks } from '../types';
-import { useSwiperia } from '../useSwiperia/useSwiperia';
+import type { SwiperiaCallbacks } from '../types.js';
+import { useSwiperia } from '../useSwiperia/useSwiperia.js';
 
 export type SwipeAreaProps = PropsWithChildren<SwiperiaCallbacks> &
-  ComponentPropsWithRef<'div'>;
+  ComponentPropsWithoutRef<'div'>;
 
-const SwipeArea = forwardRef<HTMLDivElement, SwipeAreaProps>(
+const assignRef = (
+  ref: Ref<HTMLDivElement> | null,
+  el: HTMLDivElement | null,
+) => {
+  if (typeof ref === 'function') {
+    ref(el);
+  } else if (ref) {
+    (ref as { current: HTMLDivElement | null }).current = el;
+  }
+};
+
+export const SwipeArea = forwardRef<HTMLDivElement, SwipeAreaProps>(
   (
     {
       onSwipeStart,
@@ -23,9 +35,9 @@ const SwipeArea = forwardRef<HTMLDivElement, SwipeAreaProps>(
       onSwipeCancelled,
       ...props
     },
-    ref
+    ref,
   ) => {
-    const { ref: _ref } = useSwiperia({
+    const { ref: swipeRef } = useSwiperia({
       onSwipeStart,
       onSwipedDown,
       onSwiped,
@@ -38,18 +50,16 @@ const SwipeArea = forwardRef<HTMLDivElement, SwipeAreaProps>(
 
     const handleRef = useCallback(
       (el: HTMLDivElement | null) => {
-        _ref(el);
-        if (typeof ref === 'function') {
-          ref(el);
-        } else if (ref) {
-          ref.current = el;
-        }
+        swipeRef(el);
+        assignRef(ref, el);
       },
-      [_ref, ref]
+      [swipeRef, ref],
     );
 
-    return <div ref={handleRef} {...props} />;
-  }
+    return <div {...props} ref={handleRef} />;
+  },
 );
+
+SwipeArea.displayName = 'SwipeArea';
 
 export default SwipeArea;

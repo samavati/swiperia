@@ -1,0 +1,92 @@
+---
+title: Gesture functions
+description: The swiperia-core maths - direction, distance, velocity and movement.
+---
+
+These are pure functions over coordinates. They attach nothing to the DOM, which is why
+`swiperia-core` runs anywhere JavaScript does.
+
+```package-install
+swiperia-core
+```
+
+All of them take [`Vector2`](/docs/reference/types#vector2) points — `[x, y]` tuples.
+
+## movement
+
+```ts
+movement(source: Vector2, target: Vector2, duration: number): MovementEvent
+```
+
+Computes everything about a gesture in one call and returns a
+[`MovementEvent`](/docs/reference/swipe-event#movementevent). `duration` is in
+milliseconds.
+
+```ts
+import { movement } from 'swiperia-core';
+
+movement([0, 0], [100, 50], 200);
+// {
+//   source: [0, 0], target: [100, 50],
+//   deltaX: 100, deltaY: 50, absX: 100, absY: 50,
+//   direction: 'right', velocity: 0.559, vxvy: [0.5, 0.25], distance: 111.8
+// }
+```
+
+## direction
+
+```ts
+direction(a: Vector2, b: Vector2): SwipeDirection | null
+```
+
+The dominant axis of travel. The larger absolute delta wins; a tie resolves to the
+vertical axis. Returns `null` when the two points are identical.
+
+```ts
+direction([0, 0], [100, 50]); // 'right'
+direction([0, 0], [50, 100]); // 'down'
+direction([5, 5], [5, 5]); // null
+```
+
+<Callout type="info">
+  The y axis points down, as it does in the DOM: a larger `y` means the user
+  swiped *down*.
+</Callout>
+
+## distance
+
+```ts
+distance(a: Vector2, b: Vector2): number
+```
+
+Straight-line distance between the points, in pixels.
+
+```ts
+distance([0, 0], [3, 4]); // 5
+```
+
+## velocity
+
+```ts
+velocity(a: Vector2, b: Vector2, dt: number): number
+```
+
+Distance divided by `dt` — speed, with no direction. Returns `Infinity` when `dt` is `0`,
+and throws when `dt` is negative.
+
+```ts
+velocity([0, 0], [3, 4], 2); // 2.5
+```
+
+## vxvy
+
+```ts
+vxvy(a: Vector2, b: Vector2, dt: number): Vector2
+```
+
+Velocity per axis as `[vx, vy]`, keeping the sign so you can tell direction from it.
+Returns `[Infinity, Infinity]` when `dt` is `0`, and throws when `dt` is negative.
+
+```ts
+vxvy([0, 0], [3, 4], 2); // [1.5, 2]
+```

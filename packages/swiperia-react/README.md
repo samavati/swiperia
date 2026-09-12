@@ -1,59 +1,75 @@
-# Swiperia React
+# swiperia-react
 
-Swiperia React is a React-specific library that provides a seamless integration of the Swiperia swipe gesture handling capabilities into your React applications. Built on top of `swiperia-core` and `swiperia-js`, this package offers a set of React components and hooks that make it easy to add swipe gesture support to your user interfaces.
-
-## Features
-
-- **Swipe Area Component**: A React component that wraps your content and provides swipe gesture detection and handling out of the box.
-- **useSwiperia Hook**: A custom React hook that allows you to add swipe gesture handling capabilities to your functional components.
-- **Consistent Swipe Event Handling**: Receive consistent swipe events (`start`, `move`, `end`, `cancel`) within your React components.
-- **Customizable Swipe Configuration**: Customize the swipe behavior by providing configuration options, such as thresholds and constraints.
-- **Seamless Integration with React**: Swiperia React is designed to work seamlessly with React, leveraging its component lifecycle and state management capabilities.
+React bindings for [Swiperia](https://github.com/samavati/swiperia): a `SwipeArea`
+component and a `useSwiperia` hook, both backed by [`swiperia-js`](https://www.npmjs.com/package/swiperia-js).
 
 ## Installation
 
-You can install the `swiperia-react` package using npm or yarn:
-
 ```bash
 npm install swiperia-react
-# or
-yarn add swiperia-react
 ```
 
+Requires React 18 or 19 as a peer dependency.
+
+> Ships both ESM and CommonJS with matching type declarations - `import` and `require` both work.
+
 ## Usage
-Here's a basic example of how to use the swiperia-react package:
+
+### `SwipeArea`
 
 ```tsx
-import React from 'react';
 import { SwipeArea } from 'swiperia-react';
 
-const MyComponent = () => {
-  const handleSwipeStart = () => {
-    console.log('Swipe started');
-  };
+const Card = () => (
+  <SwipeArea
+    style={{ width: 300, height: 300 }}
+    onSwipedLeft={(e) => console.log('left', e.velocity)}
+    onSwipedRight={() => console.log('right')}
+  >
+    Swipe me
+  </SwipeArea>
+);
+```
 
-  const handleSwipeEnd = (event) => {
-    console.log('Swipe ended', event.direction);
-  };
+`SwipeArea` renders a `div` and forwards every other prop and the `ref` to it.
 
-  return (
-    <SwipeArea
-      onSwipeStart={handleSwipeStart}
-      onSwiped={handleSwipeEnd}
-    >
-      {/* Your swipeable content goes here */}
-      <div>Swipe me!</div>
-    </SwipeArea>
-  );
+### `useSwiperia`
+
+Use the hook when you need the gesture on an element you already render.
+
+```tsx
+import { useSwiperia } from 'swiperia-react';
+
+const Card = () => {
+  const { ref } = useSwiperia({
+    config: { threshold: 20, allowedTime: 400 },
+    onSwiping: (e) => console.log(e.deltaX, e.deltaY),
+    onSwiped: (e) => console.log('swiped', e.direction),
+  });
+
+  return <section ref={ref}>Swipe me</section>;
 };
 ```
 
+Inline handlers are safe: the hook reads the latest callbacks on every event instead
+of re-attaching DOM listeners when they change identity.
 
-## Documentation
-For detailed documentation, including API references, advanced usage examples, and guides on using the useSwiperia hook, please visit the [Swiperia Documentation](https://samavati.github.io/swiperia/).
+## Callbacks
 
-## Contributing
-We welcome contributions from the community! If you'd like to contribute to Swiperia React, please read our Contributing Guide for more information.
+| Prop               | Fires                                                   |
+| ------------------ | ------------------------------------------------------- |
+| `onSwipeStart`     | when a gesture begins                                   |
+| `onSwiping`        | on every move while the gesture is tracked              |
+| `onSwiped`         | when a gesture completes                                |
+| `onSwipedLeft`     | after `onSwiped`, when the direction was left           |
+| `onSwipedRight`    | after `onSwiped`, when the direction was right          |
+| `onSwipedUp`       | after `onSwiped`, when the direction was up             |
+| `onSwipedDown`     | after `onSwiped`, when the direction was down           |
+| `onSwipeCancelled` | when the gesture missed the threshold or the time limit |
+
+Every callback receives a `SwipeEvent` with the direction, deltas, velocity, distance
+and the originating DOM event.
 
 ## License
-Swiperia React is released under the MIT License.
+
+MIT © Ehsan Samavati

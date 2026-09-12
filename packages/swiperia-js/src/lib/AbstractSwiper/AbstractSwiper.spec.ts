@@ -1,15 +1,15 @@
-import { AbstractSwiper } from './AbstractSwiper';
-import { movement } from 'swiperia-core';
-import { MouseEvents } from 'test-utils';
-import { vi, Mock } from 'vitest';
+import { movement, type SwipeCallback, type SwipeConfig } from 'swiperia-core';
+import { vi, type Mock } from 'vitest';
+import { MouseEvents } from '../../testing/mouse-events.js';
+import { AbstractSwiper } from './AbstractSwiper.js';
 
 class MockSwiper extends AbstractSwiper {
-  constructor(el: HTMLElement, config?: any) {
+  constructor(el: HTMLElement, config?: SwipeConfig) {
     super(el, config);
   }
 
   point(e: MouseEvent): [number, number] {
-    return [e.clientX, e.clientY];
+    return [e.pageX, e.pageY];
   }
 
   protected override _start(e: UIEvent): void {
@@ -24,7 +24,7 @@ class MockSwiper extends AbstractSwiper {
     window.removeEventListener('mouseup', this._end, false);
   }
 
-  listen(callback: any): void {
+  listen(callback: SwipeCallback): void {
     this._callback = callback;
     this.el.addEventListener('mousedown', this._start, false);
   }
@@ -36,7 +36,7 @@ class MockSwiper extends AbstractSwiper {
   }
 }
 
-describe('AbstractSwipeDetector', () => {
+describe('AbstractSwiper', () => {
   let detector: MockSwiper;
   let callback: Mock;
   let events: MouseEvents;
@@ -75,7 +75,7 @@ describe('AbstractSwipeDetector', () => {
     const expectedMovement = movement(
       [startEvent.pageX, startEvent.pageY],
       [moveEvent.pageX, moveEvent.pageY],
-      moveEvent.timeStamp - startEvent.timeStamp
+      moveEvent.timeStamp - startEvent.timeStamp,
     );
 
     expect(callback).toHaveBeenCalledTimes(2);
@@ -94,7 +94,7 @@ describe('AbstractSwipeDetector', () => {
     const expectedMovement = movement(
       [startEvent.pageX, startEvent.pageY],
       [endEvent.pageX, endEvent.pageY],
-      endEvent.timeStamp - startEvent.timeStamp
+      endEvent.timeStamp - startEvent.timeStamp,
     );
 
     expect(callback).toHaveBeenCalledWith({
@@ -114,8 +114,9 @@ describe('AbstractSwipeDetector', () => {
     const expectedMovement = movement(
       [startEvent.pageX, startEvent.pageY],
       [endEvent.pageX, endEvent.pageY],
-      endEvent.timeStamp - startEvent.timeStamp
+      endEvent.timeStamp - startEvent.timeStamp,
     );
+
     expect(callback).toHaveBeenCalledWith({
       event: endEvent,
       type: 'cancel',
@@ -123,9 +124,9 @@ describe('AbstractSwipeDetector', () => {
     });
   });
 
-  it('should call destroy when destroy is called', () => {
+  it('should remove the window listeners when destroy is called', () => {
     events.start();
-    const spy = vi.spyOn(window,'removeEventListener');
+    const spy = vi.spyOn(window, 'removeEventListener');
     detector.destroy();
 
     expect(spy).toHaveBeenCalledWith('mousemove', expect.anything(), false);

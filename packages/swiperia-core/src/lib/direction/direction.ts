@@ -1,5 +1,5 @@
-import type { Vector2 } from '../types/Vector2.type';
-import type { SwipeDirection } from '../types/SwipeDirection.type';
+import type { Vector2 } from '../types/Vector2.type.js';
+import type { SwipeDirection } from '../types/SwipeDirection.type.js';
 
 /**
  * Determines the direction between two points.

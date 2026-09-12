@@ -1,4 +1,4 @@
-import type { Vector2 } from '../types/Vector2.type';
+import type { Vector2 } from '../types/Vector2.type.js';
 
 /**
  * Calculates the Euclidean distance between two points.

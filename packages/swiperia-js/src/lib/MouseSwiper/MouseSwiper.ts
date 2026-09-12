@@ -1,5 +1,5 @@
 import type { Vector2, SwipeCallback, SwipeConfig } from 'swiperia-core';
-import { AbstractSwiper } from '../AbstractSwiper/AbstractSwiper';
+import { AbstractSwiper } from '../AbstractSwiper/AbstractSwiper.js';
 
 export class MouseSwiper extends AbstractSwiper {
   constructor(el: HTMLElement, config?: SwipeConfig) {
@@ -11,9 +11,10 @@ export class MouseSwiper extends AbstractSwiper {
   }
 
   protected override _start(e: UIEvent): void {
-    super._start(e);
+    // Add the listeners before the callback runs, so a destroy() from it removes them.
     window.addEventListener('mousemove', this._move, false);
     window.addEventListener('mouseup', this._end, false);
+    super._start(e);
   }
 
   protected override _end(e: UIEvent): void {

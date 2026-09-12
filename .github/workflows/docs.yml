@@ -1,0 +1,62 @@
+name: Docs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/swiperia-docs/**'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - uses: actions/configure-pages@v5
+        id: pages
+
+      - name: Build docs
+        run: pnpm nx build:pages swiperia-docs
+        env:
+          # A project site is served from https://<user>.github.io/<repo>, so every
+          # asset and route needs that prefix. configure-pages resolves it for us.
+          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          # base_url, not origin: it carries the repo prefix, which the
+          # Open Graph image URLs need too.
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: apps/swiperia-docs/out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

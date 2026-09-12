@@ -1,0 +1,43 @@
+---
+title: Swiper
+description: Compose detectors over a single element.
+---
+
+`Swiper` takes an element and a list of detector _classes_, instantiates each one and
+forwards every gesture to a single callback.
+
+```ts
+import { MouseSwiper, Swiper, TouchSwiper } from 'swiperia-js';
+
+const swiper = new Swiper(element, [MouseSwiper, TouchSwiper], {
+  threshold: 20,
+});
+```
+
+| Parameter   | Type                                     | Description                                                |
+| ----------- | ---------------------------------------- | ---------------------------------------------------------- |
+| `el`        | `HTMLElement`                            | The element the gesture starts on.                         |
+| `detectors` | `(new (el, config) => AbstractSwiper)[]` | Detector classes, not instances. `Swiper` constructs them. |
+| `config`    | `SwipeConfig`                            | Optional. See [configuration](/docs/web/configuration).    |
+
+## Methods
+
+### `listen(callback)`
+
+Instantiates each detector and subscribes `callback` to all of them. The callback
+receives a [`SwipeEvent`](/docs/reference/swipe-event).
+
+### `destroy()`
+
+Destroys every detector it created and empties its internal list, so calling it twice is
+safe.
+
+```ts
+swiper.listen((event) => console.log(event.direction));
+swiper.destroy();
+```
+
+<Callout>
+  Passing classes rather than instances is what lets `Swiper` own their lifetime
+  — you never construct or tear down a detector yourself.
+</Callout>

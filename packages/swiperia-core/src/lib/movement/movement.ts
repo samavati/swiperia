@@ -1,9 +1,9 @@
-import type { MovementEvent } from '../types/MovementEvent.type';
-import type { Vector2 } from '../types/Vector2.type';
+import type { MovementEvent } from '../types/MovementEvent.type.js';
+import type { Vector2 } from '../types/Vector2.type.js';
 
-import { direction } from '../direction/direction';
-import { distance } from '../distance/distance';
-import { velocity, vxvy } from '../velocity/velocity';
+import { direction } from '../direction/direction.js';
+import { distance } from '../distance/distance.js';
+import { velocity, vxvy } from '../velocity/velocity.js';
 
 /**
  * Calculates a movement event based on the given source and target points, and the duration of the movement.
@@ -16,7 +16,7 @@ import { velocity, vxvy } from '../velocity/velocity';
 export const movement = (
   source: Vector2,
   target: Vector2,
-  duration: number
+  duration: number,
 ): MovementEvent => {
   const deltaX = target[0] - source[0];
   const deltaY = target[1] - source[1];

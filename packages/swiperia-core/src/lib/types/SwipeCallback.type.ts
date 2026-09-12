@@ -1,4 +1,4 @@
-import type { SwipeEvent } from './SwipeEvent.type';
+import type { SwipeEvent } from './SwipeEvent.type.js';
 
 /**
  * A callback function that is called when a swipe event occurs.

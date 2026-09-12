@@ -1,0 +1,44 @@
+---
+title: Detectors
+description: MouseSwiper and TouchSwiper.
+---
+
+A detector translates one family of DOM events into swipe events. Both shipped detectors
+extend [`AbstractSwiper`](/docs/web/custom-detector) and share its behaviour; they differ
+only in the events they bind and how they read a coordinate.
+
+## MouseSwiper
+
+Binds `mousedown` on the element, then `mousemove` and `mouseup` on `window` so a gesture
+keeps tracking when the cursor leaves the element. Coordinates come from `pageX`/`pageY`.
+
+```ts
+import { MouseSwiper } from 'swiperia-js';
+
+const swiper = new MouseSwiper(element, { threshold: 10 });
+swiper.listen((event) => console.log(event.direction));
+```
+
+## TouchSwiper
+
+Binds `touchstart` on the element and `touchmove`/`touchend` on `window`. Coordinates come
+from the first entry of `changedTouches`.
+
+```ts
+import { TouchSwiper } from 'swiperia-js';
+
+const swiper = new TouchSwiper(element);
+swiper.listen((event) => console.log(event.direction));
+```
+
+## Using them directly
+
+Both take the same arguments as `Swiper` minus the detector list, and expose the same
+`listen()` and `destroy()` methods. Reach for them directly when you deliberately want a
+single input type — a mouse-only drag handle, for example. Otherwise compose them with
+[`Swiper`](/docs/web/swiper).
+
+<Callout>
+  Destroying a detector from inside its own `start` callback works: listeners
+  are attached before the callback runs, so `destroy()` can remove them.
+</Callout>

@@ -1,51 +1,47 @@
-# Swiperia Core
+# swiperia-core
 
-Swiperia Core is the foundation of the Swiperia library, providing essential utilities and functions for handling swipe gestures and calculating swipe-related metrics. This package is designed to be platform-agnostic and can be used in any JavaScript environment, including the browser, Node.js, and React Native.
-
-## Features
-
-- **Swipe Direction Detection**: Determine the direction of a swipe gesture (left, right, up, down) based on the start and end coordinates.
-- **Swipe Distance Calculation**: Calculate the distance traveled during a swipe gesture.
-- **Swipe Velocity Calculation**: Calculate the velocity of a swipe gesture, including the separate velocities along the x and y axes.
-- **Swipe Movement Analysis**: Analyze the movement of a swipe gesture, including the start and end coordinates, delta values, and absolute delta values.
-- **Swipe Event Handling**: Provide a consistent and extensible way to handle swipe events, such as `start`, `move`, `end`, and `cancel`.
+The foundation of [Swiperia](https://github.com/samavati/swiperia): platform-agnostic
+utilities for analysing swipe gestures. No DOM listeners, no framework — just the maths
+and the types that the rest of the stack is built on.
 
 ## Installation
 
-You can install the `swiperia-core` package using npm or yarn:
-
 ```bash
 npm install swiperia-core
-# or
-yarn add swiperia-core
 ```
 
+> Ships both ESM and CommonJS with matching type declarations - `import` and `require` both work.
 
 ## Usage
-Here's a basic example of how to use the swiperia-core package:
 
 ```ts
 import { direction, distance, movement, velocity, vxvy } from 'swiperia-core';
 
-const start = [100, 200];
-const end = [300, 250];
-const duration = 500; // in milliseconds
+const start: [number, number] = [100, 200];
+const end: [number, number] = [300, 250];
+const duration = 500; // ms
 
-const swipeData = movement(start, end, duration);
-
-console.log('Swipe Direction:', direction(start, end)); // Output: 'right'
-console.log('Swipe Distance:', distance(start, end)); // Output: 208.06...
-console.log('Swipe Velocity:', velocity(start, end, duration)); // Output: 416.12...
-console.log('Swipe Velocity (x, y):', vxvy(start, end, duration)); // Output: [400, 100]
-console.log('Swipe Movement:', swipeData);
+direction(start, end); // 'right'
+distance(start, end); // 206.15...
+velocity(start, end, duration); // 0.41... px/ms
+vxvy(start, end, duration); // [0.4, 0.1]
+movement(start, end, duration); // everything above, in one object
 ```
 
-## Documentation
-For detailed documentation, including API references and advanced usage examples, please visit the [Swiperia Documentation](https://samavati.github.io/swiperia/).
+## API
 
-## Contributing
-We welcome contributions from the community! If you'd like to contribute to Swiperia Core, please read our Contributing Guide for more information.
+| Export               | Description                                                                                                                 |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `direction(a, b)`    | Dominant axis direction between two points: `'left' \| 'right' \| 'up' \| 'down'`, or `null` when the points are identical. |
+| `distance(a, b)`     | Euclidean distance in pixels.                                                                                               |
+| `velocity(a, b, dt)` | Speed over `dt`. `Infinity` when `dt` is `0`; throws when `dt` is negative.                                                 |
+| `vxvy(a, b, dt)`     | Per-axis velocity as `[vx, vy]`.                                                                                            |
+| `movement(a, b, dt)` | A full `MovementEvent`: deltas, absolutes, direction, velocity and distance.                                                |
+
+### Types
+
+`Vector2`, `SwipeDirection`, `MovementEvent`, `SwipeEvent`, `SwipeConfig`, `SwipeCallback`.
 
 ## License
-Swiperia Core is released under the MIT License.
 
+MIT © Ehsan Samavati

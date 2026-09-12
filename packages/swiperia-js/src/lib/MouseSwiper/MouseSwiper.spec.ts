@@ -1,6 +1,6 @@
-import { Mock, vi } from 'vitest';
-import { SwipeConfig } from 'swiperia-core';
-import { MouseSwiper } from './MouseSwiper';
+import type { SwipeConfig } from 'swiperia-core';
+import { vi, type Mock } from 'vitest';
+import { MouseSwiper } from './MouseSwiper.js';
 
 describe('MouseSwiper', () => {
   const startEvent = new MouseEvent('mousedown', {
@@ -17,9 +17,7 @@ describe('MouseSwiper', () => {
     mouseSwiper?.destroy();
     callback = vi.fn();
     el = document.createElement('div');
-    config = {
-      threshold: 10,
-    };
+    config = { threshold: 10 };
     mouseSwiper = new MouseSwiper(el, config);
   });
 
@@ -63,7 +61,7 @@ describe('MouseSwiper', () => {
     expect(addEventListenerSpy).toHaveBeenCalledWith(
       'mousedown',
       expect.anything(),
-      false
+      false,
     );
 
     mouseSwiper.destroy();
@@ -71,10 +69,21 @@ describe('MouseSwiper', () => {
     expect(removeEventListenerSpy).toHaveBeenCalledWith(
       'mousedown',
       expect.anything(),
-      false
+      false,
     );
 
     addEventListenerSpy.mockRestore();
     removeEventListenerSpy.mockRestore();
+  });
+
+  it('should stop tracking the swipe when destroyed from the start callback', () => {
+    const onEvent = vi.fn((e: { type: string }) => {
+      if (e.type === 'start') mouseSwiper.destroy();
+    });
+    mouseSwiper.listen(onEvent);
+    el.dispatchEvent(startEvent);
+    window.dispatchEvent(endEvent);
+
+    expect(onEvent).toHaveBeenCalledTimes(1);
   });
 });

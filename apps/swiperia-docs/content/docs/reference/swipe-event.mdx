@@ -1,0 +1,50 @@
+---
+title: Event objects
+description: MovementEvent and SwipeEvent.
+---
+
+## MovementEvent
+
+What a gesture did, with no reference to the DOM. Returned by
+[`movement()`](/docs/reference/movement#movement).
+
+| Property    | Type                     | Description                                                      |
+| ----------- | ------------------------ | ---------------------------------------------------------------- |
+| `direction` | `SwipeDirection \| null` | Dominant axis of travel, `null` when the points are identical.   |
+| `source`    | `Vector2`                | Where the gesture started.                                       |
+| `target`    | `Vector2`                | Where it ended.                                                  |
+| `deltaX`    | `number`                 | Signed horizontal travel. Positive is right.                     |
+| `deltaY`    | `number`                 | Signed vertical travel. Positive is down.                        |
+| `absX`      | `number`                 | `Math.abs(deltaX)`.                                              |
+| `absY`      | `number`                 | `Math.abs(deltaY)`.                                              |
+| `velocity`  | `number`                 | Speed in pixels per millisecond.                                 |
+| `vxvy`      | `Vector2`                | Signed velocity per axis.                                        |
+| `distance`  | `number`                 | Straight-line distance between `source` and `target`, in pixels. |
+
+## SwipeEvent
+
+What a detector hands your callback: a `MovementEvent` plus the originating DOM event and
+the phase of the gesture.
+
+| Property | Type                                     | Description                       |
+| -------- | ---------------------------------------- | --------------------------------- |
+| `event`  | `UIEvent`                                | The DOM event that produced this. |
+| `type`   | `'start' \| 'move' \| 'end' \| 'cancel'` | The phase of the gesture.         |
+
+Plus every `MovementEvent` property above.
+
+```ts
+swiper.listen((event) => {
+  if (event.type !== 'end') return;
+  event.event.preventDefault();
+  console.log(event.direction, event.distance, event.velocity);
+});
+```
+
+<Callout type="info">
+  On a `start` event the gesture has not moved yet, so `direction` is `null` and
+  every metric is `0` — `source` and `target` are the same point.
+</Callout>
+
+Narrowing on `type` is the idiomatic way to handle a gesture, since the payload shape is
+identical across all four phases.

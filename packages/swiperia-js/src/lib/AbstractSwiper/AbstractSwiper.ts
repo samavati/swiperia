@@ -16,19 +16,21 @@ import {
  * handlers to process the swipe events and emit the appropriate callbacks.
  *
  * The `_config` object can be used to customize the swipe detection behavior,
- * such as the minimum distance threshold and whether to prevent scrolling during
- * a swipe.
+ * such as the minimum distance threshold and the maximum allowed duration.
  */
 export abstract class AbstractSwiper {
   protected _source: Vector2 = [0, 0];
-  protected _startTime: number = 0;
-  protected _callback: SwipeCallback = () => {};
+  protected _startTime = 0;
+  protected _callback: SwipeCallback = () => undefined;
   protected _config: Required<SwipeConfig> = {
     threshold: 10,
     allowedTime: 300,
   };
 
-  constructor(public el: HTMLElement, config?: SwipeConfig) {
+  constructor(
+    public el: HTMLElement,
+    config?: SwipeConfig,
+  ) {
     if (config) {
       this._config = {
         ...this._config,
@@ -82,19 +84,11 @@ export abstract class AbstractSwiper {
     const threshold = this._config.threshold;
     const constraint =
       _duration <= allowedTime && _movement.distance >= threshold;
-    if (constraint) {
-      this._callback({
-        event: e,
-        type: 'end',
-        ..._movement,
-      });
-    } else {
-      this._callback({
-        event: e,
-        type: 'cancel',
-        ..._movement,
-      });
-    }
+    this._callback({
+      event: e,
+      type: constraint ? 'end' : 'cancel',
+      ..._movement,
+    });
   }
 
   abstract listen(callback: SwipeCallback): void;

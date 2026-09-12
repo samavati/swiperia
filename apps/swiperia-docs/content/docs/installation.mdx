@@ -1,0 +1,44 @@
+---
+title: Installation
+description: Install the package you need and check the requirements.
+---
+
+Install the package for your environment — it pulls in the ones it depends on.
+
+```package-install
+swiperia-react
+```
+
+```package-install
+swiperia-js
+```
+
+```package-install
+swiperia-core
+```
+
+## Requirements
+
+- **Node.js 18 or newer** for tooling. The published code targets ES2022 and runs in any
+  modern browser.
+- **React 18 or 19** for `swiperia-react`, which declares React as a peer dependency.
+
+## Module formats
+
+Every package ships both ECMAScript modules and CommonJS with matching type
+declarations, so all of these resolve correctly:
+
+```ts
+import { Swiper } from 'swiperia-js'; // ESM
+```
+
+```js
+const { Swiper } = require('swiperia-js'); // CommonJS
+```
+
+TypeScript resolves the right declarations under `node10`, `node16`/`nodenext` and
+`bundler` module resolution — no configuration needed.
+
+## TypeScript
+
+Types ship inside the packages; there is no separate `@types` package to install.

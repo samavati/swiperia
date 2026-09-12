@@ -1,0 +1,48 @@
+name: Release
+
+# Versioning happens locally and lands on main through a normal pull request;
+# pushing the tag is what publishes. Tags are outside the branch ruleset, so
+# this workflow never needs write access to a branch and no rule has to be
+# bypassed for it.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read # publishing touches nothing in the repo
+  id-token: write # npm OIDC trusted publishing
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm nx run-many -t lint test build typecheck
+
+      # Fails the release if a tarball would be unusable for any consumer:
+      # publint checks the package shape, attw checks that types resolve under
+      # node10 / node16-CJS / node16-ESM / bundler.
+      - name: Verify package shape
+        run: pnpm verify-packaging
+
+      # Authenticates through OIDC trusted publishing: the `id-token` permission
+      # above lets pnpm exchange a short-lived GitHub token for a publish grant,
+      # so there is no npm token to store or rotate. Each package trusts
+      # samavati/swiperia + this workflow filename, so renaming this file breaks
+      # publishing until the trusted publishers are updated.
+      - name: Publish
+        run: pnpm nx release publish --yes
+        env:
+          NPM_CONFIG_PROVENANCE: true

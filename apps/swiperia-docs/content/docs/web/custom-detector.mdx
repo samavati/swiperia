@@ -1,0 +1,60 @@
+---
+title: Custom detectors
+description: Extend AbstractSwiper to support another input type.
+---
+
+`AbstractSwiper` holds the gesture logic — tracking the origin, timing the movement,
+computing the metrics and deciding between `end` and `cancel`. A detector only has to say
+which events to bind and how to read a coordinate from one.
+
+Implement three members:
+
+| Member             | Responsibility                                                   |
+| ------------------ | ---------------------------------------------------------------- |
+| `point(e)`         | Return the `Vector2` coordinate for an event.                    |
+| `listen(callback)` | Store the callback on `this._callback` and bind the start event. |
+| `destroy()`        | Unbind everything it bound.                                      |
+
+The base class provides `_start`, `_move` and `_end`, already bound to the instance, so
+they can be passed straight to `addEventListener`.
+
+```ts
+import { AbstractSwiper } from 'swiperia-js';
+import type { SwipeCallback, Vector2 } from 'swiperia-core';
+
+export class PointerSwiper extends AbstractSwiper {
+  point(e: PointerEvent): Vector2 {
+    return [e.pageX, e.pageY];
+  }
+
+  protected override _start(e: UIEvent): void {
+    // Bind before calling super, so a destroy() from the callback can unbind.
+    window.addEventListener('pointermove', this._move, false);
+    window.addEventListener('pointerup', this._end, false);
+    super._start(e);
+  }
+
+  protected override _end(e: UIEvent): void {
+    super._end(e);
+    window.removeEventListener('pointermove', this._move, false);
+    window.removeEventListener('pointerup', this._end, false);
+  }
+
+  listen(callback: SwipeCallback): void {
+    this._callback = callback;
+    this.el.addEventListener('pointerdown', this._start, false);
+  }
+
+  destroy(): void {
+    this.el.removeEventListener('pointerdown', this._start, false);
+    window.removeEventListener('pointermove', this._move, false);
+    window.removeEventListener('pointerup', this._end, false);
+  }
+}
+```
+
+A custom detector composes like any other:
+
+```ts
+new Swiper(element, [PointerSwiper]);
+```

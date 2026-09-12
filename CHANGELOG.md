@@ -1,17 +1,39 @@
-## 1.0.2 (2024-05-30)
+## 1.1.1 (2025-04-21)
 
+### 🩹 Fixes
+
+- **swiperia-react:** version bump only — no source changes since 1.1.0 ([12a5215](https://github.com/samavati/swiperia/commit/12a5215))
+
+### ❤️ Thank You
+
+- Ehsan Samavati
+
+## 1.1.0 (2025-04-21)
+
+### 🚀 Features
+
+- **swiperia-react:** add onSwipeCancelled callback ([e6cb6b6](https://github.com/samavati/swiperia/commit/e6cb6b6))
+
+### 🧪 Tests
+
+- **swiperia-react:** add test for onSwipeCancelled callback in useSwiperia hook ([d1e398d](https://github.com/samavati/swiperia/commit/d1e398d))
+
+### ❤️ Thank You
+
+- Ehsan Samavati
+
+## 1.0.2 (2024-05-30)
 
 ### 🩹 Fixes
 
 - **swiperia-react:** lets fix minor issue with the react package ([35940c9](https://github.com/samavati/swiperia/commit/35940c9))
 - **swiperia-react:** :art: fix the issue ([811e3df](https://github.com/samavati/swiperia/commit/811e3df))
 
-### ❤️  Thank You
+### ❤️ Thank You
 
 - Ehsan Samavati
 
 ## 1.0.1 (2024-05-30)
-
 
 ### 🚀 Features
 
@@ -22,12 +44,11 @@
 - **swiperia-react:** :bug: correct versioning ([27c1dff](https://github.com/samavati/swiperia/commit/27c1dff))
 - **swiperia-react:** :bug: automatic package versioning ([a2af35d](https://github.com/samavati/swiperia/commit/a2af35d))
 
-### ❤️  Thank You
+### ❤️ Thank You
 
 - Ehsan Samavati
 
 # 1.0.0 (2024-04-26)
-
 
 ### 🚀 Features
 
@@ -46,6 +67,18 @@
 - **js:** introduce SwipeDetector class to manage multiple detectors ([db80471](https://github.com/samavati/swiperia/commit/db80471))
 - **swiperia-react:** :sparkles: the swiperia-react package with its examples created ([623681c](https://github.com/samavati/swiperia/commit/623681c))
 
-### ❤️  Thank You
+### ❤️ Thank You
 
 - Ehsan Samavati
+
+---
+
+### A note on the releases above
+
+Everything above 1.0.0 predates the rebuild of this workspace, when the packages were
+versioned independently: the 1.1.0 and 1.1.1 entries shipped `swiperia-react` only, while
+`swiperia-core` and `swiperia-js` stayed at 1.0.2. The 1.0.2 → 1.1.1 entries were
+reconstructed from the commit history, which the changelog of the time did not record.
+
+From the next release onwards all three packages share one version and are released
+together, so an entry here applies to every package.
